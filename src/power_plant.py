@@ -65,9 +65,7 @@ class PowerPlant():
 
 
     def get_date_by_index(self, index) -> str():
-        print("HERE")
         date = self.datafile["fecha_im"].values[index]
-        print(date)
         #date = self.dates.values[index]
         return pd.to_datetime(str(date)).strftime("%Y-%m-%d %H:%M:%S")
 
@@ -92,11 +90,14 @@ class PowerPlant():
 
 
     def check_output_dir(self):
-        """Create the output directory if it doesn't exist"""
+        """Check if the output dir exist, else create it."""
         try:
-            os.makedirs(os.path.dirname(self.get_outpath()), exist_ok=True)
+            if os.path.exists(self.output_dir):
+                return
+            os.makedirs(self.output_dir)
         except Exception as err:
             print("ERROR: Can't read/write the output folder")
+            raise err
 
 
 
@@ -108,16 +109,18 @@ class PowerPlant():
             - [x] Valor máximo de active energy
             - [x] Path al archivo del gráfico
         """
+        self.check_output_dir()
+        filename = self.output_dir + "daily_summary.txt"
+
         txt_content = [
             str(self.active_power_sum_by_day()),
             str(self.min_active_energy()),
             str(self.max_active_energy()),
-            #self.filename, 
+            filename, 
         ]
         file_data = "\n".join(txt_content)
 
-        self.check_output_dir()
-        filename = self.output_dir + "daily_summary.txt"
+        return file_data
         try:
             with open(filename, encoding="utf-8") as file:
                 file.write(file_data)

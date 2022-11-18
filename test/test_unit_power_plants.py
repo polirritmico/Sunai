@@ -57,15 +57,6 @@ class TestPowerPlant(unittest.TestCase):
         self.assertEqual(expected_date_1408, output_date_1408)
 
 
-    @unittest.skip
-    def test_make_summary_txt_data(self):
-        expected="3664916\n46870800\n76978296"
-        self.power_plant.load_file()
-        output = self.power_plant.make_summary_txt()
-
-        self.assertEqual(expected, output)
-
-
     #@unittest.skip
     def test_active_power_sum_by_day(self):
         expected = 3664916
@@ -107,6 +98,16 @@ class TestPowerPlant(unittest.TestCase):
 
         self.power_plant.filename = "dummy.xlsx"
         output = self.power_plant.default_output_dir()
+        self.assertEqual(expected, output)
+
+
+    #@unittest.skip
+    def test_make_summary_txt_data(self):
+        filename = "output/datas_plantas_python_1_1/daily_summary.txt"
+        expected="3664916\n46870800\n76978296\n" + filename
+        self.power_plant.load_file()
+        output = self.power_plant.make_summary_txt()
+
         self.assertEqual(expected, output)
 
 
