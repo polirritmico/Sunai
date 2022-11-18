@@ -131,3 +131,7 @@ dmypy.json
 # LibreOffice temp files
 .~lock.*
 
+# Graph image files
+*.jpg
+*.png
+
