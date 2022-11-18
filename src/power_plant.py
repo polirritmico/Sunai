@@ -28,7 +28,7 @@ class PowerPlant():
             print("ERROR: Can't read the file: ")
             raise err
         # Parse the data
-        self.file_data.info()
+        #self.file_data.info()
         self.active_energy = self.file_data["active_energy_im"]
         self.active_power = self.file_data["active_power_im"]
         self.dates = self.file_data["fecha_im"]

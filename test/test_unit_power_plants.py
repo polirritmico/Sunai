@@ -10,14 +10,14 @@ from src.power_plant import PowerPlant
 class TestPowerPlant(unittest.TestCase):
     def setUp(self):
         self.power_plant = PowerPlant()
+        self.power_plant.filename = "test/cases/data_plantas_python_1_1.xlsx"
 
 
     def test_load_xlsx_file_dummy(self):
-        expected = "    fecha_im  active_energy_im\n0 2022-11-17         123456789"
+        expected = "    fecha_im  active_energy_im  active_power_im\n0 2022-11-17         123456789        987654321"
         self.power_plant.filename = "test/cases/dummy.xlsx"
         self.power_plant.load_file()
-        output = str(self.power_plant.dataframe)
-        print(output)
+        output = str(self.power_plant.file_data)
 
         self.assertEqual(expected, output)
 
@@ -41,7 +41,6 @@ class TestPowerPlant(unittest.TestCase):
 
     #@unittest.skip
     def test_load_xlsx_file_date_data(self):
-        self.power_plant.filename = "test/cases/data_plantas_python_1_1.xlsx"
         expected_date_42 = "2022-11-10 00:40:00"
         expected_date_586 = "2022-11-10 09:15:00"
         expected_date_1408 = "2022-11-10 23:00:00"
@@ -54,6 +53,32 @@ class TestPowerPlant(unittest.TestCase):
         self.assertEqual(expected_date_42, output_date_42)
         self.assertEqual(expected_date_586, output_date_586)
         self.assertEqual(expected_date_1408, output_date_1408)
+
+
+    @unittest.skip
+    def test_active_power_day_sum(self):
+        self.power_plant.load_file()
+        expected = 3664916
+        output = self.power_plant.get_active_power_day_sum()
+
+
+    @unittest.skip
+    def test_active_get_max_active_energy(self):
+        self.power_plant.load_file()
+        expected = 46978296
+        output = self.power_plant.get_max_active_energy()
+
+        self.assertEqual(expected, output)
+
+
+    @unittest.skip
+    def test_active_get_min_active_energy(self):
+        self.power_plant.load_file()
+        expected = 46870800
+        output = self.power_plant.get_min_active_energy()
+
+        self.assertEqual(expected, output)
+
 
 
     @unittest.skip
