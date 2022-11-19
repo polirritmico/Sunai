@@ -89,8 +89,8 @@ class TestPowerPlant(unittest.TestCase):
 
     #@unittest.skip
     def test_default_output_dir(self):
-        expected = "test/output/dummy"
-        outdir = "test/output/"
+        expected = "test/output"
+        outdir = "test/output"
 
         filename = "test/cases/dummy.xlsx"
         test_plant = PowerPlant(filename, outdir=outdir)
@@ -110,7 +110,7 @@ class TestPowerPlant(unittest.TestCase):
         expected_1 = "3664916"
         expected_2 = "46870800"
         expected_3 = "76978296"
-        filename = "test/output/data_plantas_python_1_1/output_test_graph.jpg"
+        filename = "test/output/output_test_graph.jpg"
 
         self.power_plant.load_file()
         output = self.power_plant.make_summary()
@@ -123,7 +123,7 @@ class TestPowerPlant(unittest.TestCase):
 
     #@unittest.skip
     def test_save_summary_txt(self):
-        filename = "test/output/data_plantas_python_1_1/daily_summary.txt"
+        filename = "test/output/daily_summary.txt"
         self.power_plant.load_file()
         self.power_plant.make_output_dir()
         self.power_plant.make_summary()
@@ -132,36 +132,36 @@ class TestPowerPlant(unittest.TestCase):
         self.assertTrue(os.path.exists(filename))
         # Clean created folders and file
         os.remove(filename)
-        os.removedirs("test/output/data_plantas_python_1_1")
+        os.removedirs("test/output")
 
 
-    @unittest.skip
+    #@unittest.skip
     def test_make_graph(self):
+        expected_format = "JPEG"
+        expected_size = (640, 480)
+
         input_datafile = "test/cases/small_data.xlsx"
         output_dir = "test/output_make_graph"
         output_filename = "output_image_file.jpg"
-
         power_plant = PowerPlant(input_datafile, output_dir)
-        self.power_plant.load_file()
-        self.power_plant.make_output_dir()
-        import time
-        time.sleep(5)
-        self.power_plant.make_graph()
-        self.power_plant.save_graph(output_filename)
+        power_plant.load_file()
+        power_plant.make_output_dir()
+        power_plant.make_graph()
+        power_plant.save_graph(output_filename)
 
-        #from PIL import Image
-        #from PIL.ExifTags import TAGS
-        #image = Image.open(output_filename)
+        from PIL import Image
+        from PIL.ExifTags import TAGS
+        filename = os.path.abspath(power_plant.graph_filename)
+        image = Image.open(filename)
+        output_format = image.format
+        output_size = image.size
+        image.close()
+        self.assertEqual(expected_format, output_format)
+        self.assertEqual(expected_size, output_size)
 
-        ## extracting the exif metadata
-        #exifdata = image.getexif()
-        #for tagid in exifdata:
-        #    tagname = TAGS.get(tagid, tagid)
-        #    value = exifdata.get(tagid)
-        #    # printing the final result
-        #    print(f"{tagname:25}: {value}")
-        self.assertEqual(False, True)
-
+        # Clean created folders and file
+        os.remove(output_dir + "/" + output_filename)
+        os.removedirs("test/output_make_graph")
 
 
 

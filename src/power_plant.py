@@ -23,10 +23,6 @@ class PowerPlant():
         self.graph_filename = None
         self.summary_data = None
 
-        # Setup the output dir. Add filename without extension as subfolder
-        subfolder = os.path.splitext(os.path.basename(self.filename))[0]
-        self.output_dir = os.path.join(self.output_dir, subfolder)
-
 
     def load_file(self):
         try:
@@ -43,7 +39,8 @@ class PowerPlant():
 
     def make_output_dir(self):
         if self.output_dir == "":
-            raise Exception("ERROR: No output directory assigned")
+            raise Warning("ERROR: No output directory assigned")
+            return
         try:
             if os.path.exists(self.output_dir):
                 return
@@ -95,6 +92,10 @@ class PowerPlant():
 
 
     def save_graph(self, filename):
+        # Add output_dir if filename does not have a path
+        if os.path.split(filename)[0] == "":
+            filename = os.path.join(self.output_dir, filename)
+
         self.graph_filename = filename
         try:
             self.graph_line.get_figure().savefig(filename)
