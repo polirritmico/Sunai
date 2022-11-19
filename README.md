@@ -98,6 +98,8 @@ Global:
 
 ## Arquitectura
 
+![Diseño básico](/docs/basic_design.png)
+
 En términos generales las clases PowerPlant y Day son wrappers de clases de
 Pandas.
 
