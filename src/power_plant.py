@@ -34,6 +34,8 @@ class PowerPlant():
         """Check if the output dir exist or is setted, else set or create it."""
         if self.output_dir == "":
             self.set_default_output_dir()
+        if self.output_dir[-1] != '/':
+            self.output_dir += '/'
         try:
             if os.path.exists(self.output_dir):
                 return
@@ -125,7 +127,7 @@ class PowerPlant():
             "Active power per day sum: {:9}".format(active_power_per_day),
             "Minimum active energy: {:12}".format(min_active_energy),
             "Maximum active energy: {:12}".format(max_active_energy),
-            "\nGenerated graph full filename:\n'{}'".format(filename), 
+            "\nGenerated graph full filename:\n'{}'\n".format(filename),
         ]
         file_data = "\n".join(txt_content)
 

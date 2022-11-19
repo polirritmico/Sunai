@@ -106,11 +106,12 @@ class TestPowerPlant(unittest.TestCase):
         expected_1 = "3664916"
         expected_2 = "46870800"
         expected_3 = "76978296"
-        filename = "output/data_plantas_python_1_1/daily_summary.txt"
+        #filename = "data_plantas_python_1_1/daily_summary.txt"
+        # TODO: subdir → input filename
+        filename = "test/output/daily_summary.txt"
 
         self.power_plant.load_file()
-        self.power_plant.output_dir = "test"
-        self.power_plant.set_default_output_dir()
+        self.power_plant.output_dir = "test/output"
         output = self.power_plant.make_summary_txt()
 
         self.assertIn(expected_1, output)
@@ -120,7 +121,9 @@ class TestPowerPlant(unittest.TestCase):
 
         import os
         self.assertTrue(os.path.exists(filename))
-        self.assert
+        # Clean/remove created folder and file
+        os.remove(filename)
+        os.removedirs("test/output")
 
 
     @unittest.skip
