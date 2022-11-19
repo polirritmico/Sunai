@@ -75,16 +75,18 @@ test $ ./performance_test.py
 - Considerar inputs de 1000 archivos (días).
 
 Por cada archivo/input:
+
 1. Generar un gráfico (es 1 para cada archivo, o sea 1 gráfico por día/archivo):
-  - Título: DD/MM/YYYY\_planta\_idPlanta
-  - X: Date. Ya que es diario no poner la fecha en x_label sino hh:mm
-  - Y: Active power
-2. Generar txt: 
-  - Suma diaria del active power (La suma de toda la _Series_ en el archivo)
-  - Min y max active power energy del día.
+  - **Título:** DD/MM/YYYY\_planta\_idPlanta
+  - **X:** Date. Ya que es diario no poner la fecha en x_label sino hh:mm
+  - **Y:** Active power
+2. Generar **txt**: 
+  - Suma diaria del _active power_ (La suma de toda la _Series_ en el archivo)
+  - **Min y max** _active power energy_ del día.
   - Path absoluto al gráfico diario generado.
 
 Global:
+
 3. Output consola:
   - Suma total del active power por día de **todas las plantas**. Se obtiene la
     suma del active power del día de cada planta y se suma. Se muestra esa info
@@ -96,7 +98,7 @@ Global:
 
 ## Arquitectura
 
-En términos generales las clases Power_Plant y Day son wrappers de clases de
+En términos generales las clases PowerPlant y Day son wrappers de clases de
 Pandas.
 
 ## Árbol de directorios del proyecto
