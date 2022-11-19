@@ -6,21 +6,99 @@ Proyecto de postulación
 
 ### Script
 
-Instrucciones de uso
+Ejecución:
+
+```command
+$ python sunai_challenge.py <source data folder> <output folder>
+```
+Por ejemplo, teniendo una carpeta `data` con archivos _xlsx_ y usando `output`
+como carpeta de destino:
+
+```command
+$ python sunai_challenge.py data output
+```
+
+La estructura resultante de los ficheros generados
+será la siguiente:
+
+```command
+Demo
+├── data
+│   ├── powerplant_data_01.xlsx
+│   ├── powerplant_data_02.xlsx
+│   └── ...
+├── output
+│   ├── images
+│   │   ├── 0186_21-12-2022.jpg
+│   │   ├── 0186_22-12-2022.jpg
+│   │   └── ...
+│   ├── 0186_21-12-2022_summary.txt
+│   ├── 0186_22-12-2022_summary.txt
+│   └── ...
+└── sunai_challenge.py
+```
+
+### Ayuda
+
+```command
+$ python sunai_challenge.py -h
+```
 
 ### Tests
 
-Para correr los unittest:
+Para ejecutar los unittest:
 
 ```command
-$ python -m unittest discover . -b
+sunai_proyect_folder $ python -m unittest discover . -b
 ```
+
+Para ejecutar el test de desempeño:
+
+```command
+test $ ./performance_test.py
+```
+
+### Dependencias
+
+- Python 3.10.8
+- Pandas
+- Pillow (para unit tests)
 
 ## Diseño
 
-Consideraciones de diseño
+### Instrucciones y consideraciones:
 
-## Árbol de directorios
+- Cada archivo tiene la generación de energía de 1 día completo de una planta.
+- En cada planta puede haber 1 o más inversores (columna id_i).
+- El archivo tiene la energía generada dividia por inversor.
+- Considerar inputs de 1000 archivos (días).
+
+Por cada archivo/input:
+1. Generar un gráfico (es 1 para cada archivo, o sea 1 gráfico por día/archivo):
+  - Título: DD/MM/YYYY\_planta\_idPlanta
+  - X: Date. Ya que es diario no poner la fecha en x_label sino hh:mm
+  - Y: Active power
+2. Generar txt: 
+  - Suma diaria del active power (La suma de toda la _Series_ en el archivo)
+  - Min y max active power energy del día.
+  - Path absoluto al gráfico diario generado.
+
+Global:
+3. Output consola:
+  - Suma total del active power por día de **todas las plantas**. Se obtiene la
+    suma del active power del día de cada planta y se suma. Se muestra esa info
+    para todos los días procesados.
+  - El requisito anterior considera la info de todos los archivos, por lo tanto
+    se mostrará solo 1 vez en lugar de repetir la misma salida por cada archivo
+    (por ejemplo, 1000 veces los mismo).
+
+
+## Arquitectura
+
+En términos generales las clases Power_Plant y Day son wrappers de clases de
+Pandas.
+
+## Árbol de directorios del proyecto
 
 ```command
 Sunai
@@ -29,21 +107,33 @@ Sunai
 ├── __main__.py
 ├── README.md
 ├── src
+│   ├── day.py
+│   ├── power_plant.py
+│   └── sunai.py
 └── test
-└── __init__.py
+    ├── cases
+    │   ├── data_plantas_python_1_1.xlsx
+    │   ├── data_plantas_python_2.xlsx
+    │   ├── dummy.xlsx
+    │   └── small_data.xlsx
+    ├── __init__.py
+    └── test_unit_power_plants.py
 ```
 
-## Instrucciones
+-------------------------------------------------------------------------------
+
+
+## Instrucciones textuales
 
 **Descripción del desafío**
 
 La solución debe ser presentada en github, en un repositorio público por lo que
 una vez finalizado, nos deben enviar el link a: reclutamiento@sunai.cl
 
-En esta oportunidad, contarás con 2 archivos (`.xlsx`), donde cada uno representa
-la generación de energía en una planta solar de 1 día completo, dividida por
-inversor. La relación entre inversor y planta es de muchos a uno, es decir, una
-planta está relacionada a 1 o más inversores.
+En esta oportunidad, contarás con 2 archivos (`.xlsx`), donde cada uno
+representa la generación de energía en una planta solar de 1 día completo,
+dividida por inversor. La relación entre inversor y planta es de muchos a uno,
+es decir, una planta está relacionada a 1 o más inversores.
 
 El desafío es poder procesar los archivos disponibles en recursos, tomando en
 cuenta que en la realidad pueden haber 1000 archivos a procesarse.
