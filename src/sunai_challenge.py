@@ -13,6 +13,7 @@ class SunaiChallenge():
         self.output_folder = output_folder
         self.graphs_folder = None
 
+        self.files_collection = []
         self.power_plants = []
 
 
