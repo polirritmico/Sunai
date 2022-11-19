@@ -2,6 +2,7 @@
 # -*- coding: utf-8 -*-
 
 import unittest
+import os
 
 from src.power_plant import PowerPlant
 
@@ -10,7 +11,9 @@ from src.power_plant import PowerPlant
 class TestPowerPlant(unittest.TestCase):
     def setUp(self):
         filename = "test/cases/data_plantas_python_1_1.xlsx"
-        self.power_plant = PowerPlant(filename)
+        output_dir = "test/output"
+        self.power_plant = PowerPlant(filename, output_dir)
+        self.power_plant.graph_filename = "output_test_graph.jpg"
 
 
     #@unittest.skip
@@ -32,9 +35,9 @@ class TestPowerPlant(unittest.TestCase):
 
         self.power_plant.filename = "test/cases/data_plantas_python_2.xlsx"
         self.power_plant.load_file()
-        output_first_value = self.power_plant.get_active_energy_val_by_index(0)
-        output_mid_value = self.power_plant.get_active_energy_val_by_index(286)
-        output_last_value = self.power_plant.get_active_energy_val_by_index(-1)
+        output_first_value = self.power_plant.get_active_energy_value(0)
+        output_mid_value = self.power_plant.get_active_energy_value(286)
+        output_last_value = self.power_plant.get_active_energy_value(-1)
 
         self.assertEqual(expected_first_value, output_first_value)
         self.assertEqual(expected_mid_value, output_mid_value)
@@ -48,9 +51,9 @@ class TestPowerPlant(unittest.TestCase):
         expected_date_1408 = "2022-11-10 23:00:00"
 
         self.power_plant.load_file()
-        output_date_42 = self.power_plant.get_date_by_index(40)
-        output_date_586 = self.power_plant.get_date_by_index(584)
-        output_date_1408 = self.power_plant.get_date_by_index(1406)
+        output_date_42 = self.power_plant.get_date(40)
+        output_date_586 = self.power_plant.get_date(584)
+        output_date_1408 = self.power_plant.get_date(1406)
 
         self.assertEqual(expected_date_42, output_date_42)
         self.assertEqual(expected_date_586, output_date_586)
@@ -86,67 +89,78 @@ class TestPowerPlant(unittest.TestCase):
 
     #@unittest.skip
     def test_default_output_dir(self):
-        expected = "output/dummy/"
+        expected = "test/output/dummy"
+        outdir = "test/output/"
 
-        self.power_plant.filename = "test/cases/dummy.xlsx"
-        output = self.power_plant.set_default_output_dir()
-        self.assertEqual(expected, output)
+        filename = "test/cases/dummy.xlsx"
+        test_plant = PowerPlant(filename, outdir=outdir)
+        self.assertEqual(expected, test_plant.output_dir)
 
-        self.power_plant.filename = "any_folder/dummy.xlsx"
-        output = self.power_plant.set_default_output_dir()
-        self.assertEqual(expected, output)
+        filename = "any_folder/dummy.xlsx"
+        test_plant = PowerPlant(filename, outdir=outdir)
+        self.assertEqual(expected, test_plant.output_dir)
 
-        self.power_plant.filename = "dummy.xlsx"
-        output = self.power_plant.set_default_output_dir()
-        self.assertEqual(expected, output)
+        filename = "dummy.xlsx"
+        test_plant = PowerPlant(filename=filename, outdir=outdir)
+        self.assertEqual(expected, test_plant.output_dir)
 
 
     #@unittest.skip
-    def test_make_summary_txt_data(self):
+    def test_make_summary_data(self):
         expected_1 = "3664916"
         expected_2 = "46870800"
         expected_3 = "76978296"
-        #filename = "data_plantas_python_1_1/daily_summary.txt"
-        # TODO: subdir → input filename
-        filename = "test/output/daily_summary.txt"
+        filename = "test/output/data_plantas_python_1_1/output_test_graph.jpg"
 
         self.power_plant.load_file()
-        self.power_plant.output_dir = "test/output"
-        output = self.power_plant.make_summary_txt()
+        output = self.power_plant.make_summary()
 
         self.assertIn(expected_1, output)
         self.assertIn(expected_2, output)
         self.assertIn(expected_3, output)
         self.assertIn(filename, output)
 
-        import os
+
+    #@unittest.skip
+    def test_save_summary_txt(self):
+        filename = "test/output/data_plantas_python_1_1/daily_summary.txt"
+        self.power_plant.load_file()
+        self.power_plant.make_output_dir()
+        self.power_plant.make_summary()
+        self.power_plant.save_summary_txt()
+
         self.assertTrue(os.path.exists(filename))
-        # Clean/remove created folder and file
+        # Clean created folders and file
         os.remove(filename)
-        os.removedirs("test/output")
+        os.removedirs("test/output/data_plantas_python_1_1")
 
 
     @unittest.skip
     def test_make_graph(self):
-        #self.power_plant.filename = "test/cases/dummy.xlsx"
-        self.power_plant.filename = "test/cases/small_data.xlsx"
-        output_filename = "test/cases/output_image_file.jpg"
+        input_datafile = "test/cases/small_data.xlsx"
+        output_dir = "test/output_make_graph"
+        output_filename = "output_image_file.jpg"
+
+        power_plant = PowerPlant(input_datafile, output_dir)
         self.power_plant.load_file()
+        self.power_plant.make_output_dir()
+        import time
+        time.sleep(5)
+        self.power_plant.make_graph()
+        self.power_plant.save_graph(output_filename)
 
-        self.power_plant.make_graph(output_filename)
+        #from PIL import Image
+        #from PIL.ExifTags import TAGS
+        #image = Image.open(output_filename)
 
-        # from PIL import Image
-        # from PIL.ExifTags import TAGS
-        # image = Image.open(output_filename)
-
-        # # extracting the exif metadata
-        # exifdata = image.getexif()
-        # for tagid in exifdata:
-        #     tagname = TAGS.get(tagid, tagid)
-        #     value = exifdata.get(tagid)
-        #     # printing the final result
-        #     print(f"{tagname:25}: {value}")
-        # assertEqual(False, True)
+        ## extracting the exif metadata
+        #exifdata = image.getexif()
+        #for tagid in exifdata:
+        #    tagname = TAGS.get(tagid, tagid)
+        #    value = exifdata.get(tagid)
+        #    # printing the final result
+        #    print(f"{tagname:25}: {value}")
+        self.assertEqual(False, True)
 
 
 

@@ -9,7 +9,7 @@ import datetime
 
 
 class PowerPlant():
-    def __init__(self, filename: str()="default", outdir: str()=""):
+    def __init__(self, filename: str="default", outdir: str="output"):
         self.filename = filename
         self.output_dir = outdir
 
@@ -19,30 +19,13 @@ class PowerPlant():
         self.dates = None
 
         self.graph_data = None
-        self.grap_line = None
+        self.graph_line = None
+        self.graph_filename = None
+        self.summary_data = None
 
-
-    def set_default_output_dir(self):
-        #self.filename → test/cases/data_plantas_python_1_1.xlsx
-        subfolder = os.path.splitext(self.filename)[0].split('/')[-1]
-        outdir = "output" + '/' + subfolder + '/'
-        self.output_dir = outdir
-        return outdir
-
-
-    def check_output_dir(self):
-        """Check if the output dir exist or is setted, else set or create it."""
-        if self.output_dir == "":
-            self.set_default_output_dir()
-        if self.output_dir[-1] != '/':
-            self.output_dir += '/'
-        try:
-            if os.path.exists(self.output_dir):
-                return
-            os.makedirs(self.output_dir)
-        except Exception as err:
-            print("ERROR: Can't read/write the output folder")
-            raise err
+        # Setup the output dir. Add filename without extension as subfolder
+        subfolder = os.path.splitext(os.path.basename(self.filename))[0]
+        self.output_dir = os.path.join(self.output_dir, subfolder)
 
 
     def load_file(self):
@@ -58,35 +41,23 @@ class PowerPlant():
         self.active_power = datafile.set_index("fecha_im")[["id_i", "active_power_im"]]
 
 
-    def make_graph(self):
-        """
-        Generar gráfico line chart:
-            - Eje x fecha
-            - Eje y active power
-            - Guardar archivo
-        """
-
-        self.graph_line = self.active_power.plot(
-                kind="line",
-                title="Active power by inversor",
-                grid=True,
-                #ylabel="Active power",
-                xlabel="Timestamp",
-                #x_compat=True,
-                #color="tab:orange",
-                #legend=False,
-        )
+    def make_output_dir(self):
+        if self.output_dir == "":
+            raise Exception("ERROR: No output directory assigned")
+        try:
+            if os.path.exists(self.output_dir):
+                return
+            os.makedirs(self.output_dir)
+        except Exception as err:
+            print("ERROR: Can't read/write the output folder")
+            raise err
 
 
-    def save_graph(self, output_file):
-        self.graph_line.get_figure().savefig(output_file)
-
-
-    def get_active_energy_val_by_index(self, index) -> int():
+    def get_active_energy_value(self, index) -> int():
         return self.active_energy.values[index][1]
 
 
-    def get_date_by_index(self, index) -> str():
+    def get_date(self, index) -> str():
         date = self.datafile["fecha_im"].values[index]
         #date = self.dates.values[index]
         return pd.to_datetime(str(date)).strftime("%Y-%m-%d %H:%M:%S")
@@ -104,7 +75,35 @@ class PowerPlant():
         return int(self.active_power["active_power_im"].sum())
 
 
-    def make_summary_txt(self):
+    def make_graph(self):
+        """
+        Generar gráfico line chart:
+            - Eje x fecha
+            - Eje y active power
+            - Guardar archivo
+        """
+        self.graph_line = self.active_power.plot(
+                kind="line",
+                title="Active power by inversor",
+                grid=True,
+                #ylabel="Active power",
+                xlabel="Timestamp",
+                #x_compat=True,
+                #color="tab:orange",
+                #legend=False,
+        )
+
+
+    def save_graph(self, filename):
+        self.graph_filename = filename
+        try:
+            self.graph_line.get_figure().savefig(filename)
+        except Exception as err:
+            print("ERROR: Can't save the graph to disk.")
+            raise err
+
+
+    def make_summary(self):
         """
         Generar txt con:
             - [x] Suma por día del active power
@@ -112,34 +111,42 @@ class PowerPlant():
             - [x] Valor máximo de active energy
             - [x] Path al archivo del gráfico
         """
-        # First, set the filename so we can add it to txt_content
-        self.check_output_dir()
-        filename = self.output_dir + "daily_summary.txt"
-        filename = os.path.abspath(filename)
+
+        # Set the graph filename so we can add it to txt_content
+        graph_filename = os.path.join(self.output_dir, self.graph_filename)
+        graph_filename = os.path.abspath(graph_filename)
 
         active_power_per_day = self.active_power_sum_by_day()
         min_active_energy = self.min_active_energy()
         max_active_energy = self.max_active_energy()
-
-        txt_content = [
+        data = [
             "Daily Summary\n=============\n"
             "Input file:\n'{}'\n".format(self.filename),
             "Active power per day sum: {:9}".format(active_power_per_day),
             "Minimum active energy: {:12}".format(min_active_energy),
             "Maximum active energy: {:12}".format(max_active_energy),
-            "\nGenerated graph full filename:\n'{}'\n".format(filename),
+            "\nGenerated graph full filename:\n'{}'".format(graph_filename),
+            "" # trailing newline
         ]
-        file_data = "\n".join(txt_content)
+        self.summary_data = "\n".join(data)
+
+        return self.summary_data
 
 
+    def save_summary_txt(self, filename="daily_summary.txt"):
+        if self.summary_data is None:
+            print("ERROR: No summary data")
+            raise Exception("Missing summary data, try make_summary_txt()")
+
+        if not filename.endswith(".txt"):
+            filename += ".txt"
+        filename = os.path.join(self.output_dir, filename)
         try:
             with open(filename, "w", encoding="utf-8") as file:
-                file.write(file_data)
+                file.write(self.summary_data)
         except Exception as err:
             print("ERROR: Can't write the summary file")
             raise err
-
-        return file_data
 
 
     def console_output(self):
