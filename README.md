@@ -18,8 +18,7 @@ como carpeta de destino:
 $ python sunai_challenge.py data output
 ```
 
-La estructura resultante de los ficheros generados
-será la siguiente:
+La estructura resultante de los ficheros generados será la siguiente:
 
 ```command
 Demo
@@ -37,6 +36,8 @@ Demo
 │   └── ...
 └── sunai_challenge.py
 ```
+> En este caso de ejemplo, 0186 es la id de la planta y la fecha corresponde
+> a la fecha de lectura contenida en el archivo de entrada.
 
 ### Ayuda
 
