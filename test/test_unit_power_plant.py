@@ -13,4 +13,15 @@ class TestPowerPlant(unittest.TestCase):
         pass
 
 
+    #@unittest.skip
+    def test_read_files(self):
+        expected = ["data_plantas_python_1_1.xlsx",
+                "data_plantas_python_2.xlsx",
+                "dummy.xlsx",
+                "small_data.xlsx"]
+
+        power_plant = PowerPlant()
+        output = power_plant.files_collection
+
+        self.assertEqual(expected, output)
 
