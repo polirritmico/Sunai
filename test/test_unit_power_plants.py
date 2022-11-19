@@ -3,6 +3,9 @@
 
 import unittest
 import os
+# Needed for test_make_graph
+from PIL import Image
+from PIL.ExifTags import TAGS
 
 from src.power_plant import PowerPlant
 
@@ -149,8 +152,6 @@ class TestPowerPlant(unittest.TestCase):
         power_plant.make_graph()
         power_plant.save_graph(output_filename)
 
-        from PIL import Image
-        from PIL.ExifTags import TAGS
         filename = os.path.abspath(power_plant.graph_filename)
         image = Image.open(filename)
         output_format = image.format
@@ -160,7 +161,7 @@ class TestPowerPlant(unittest.TestCase):
         self.assertEqual(expected_size, output_size)
 
         # Clean created folders and file
-        os.remove(output_dir + "/" + output_filename)
+        os.remove(os.path.join(output_dir, output_filename))
         os.removedirs("test/output_make_graph")
 
 

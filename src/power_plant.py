@@ -112,6 +112,9 @@ class PowerPlant():
             - [x] Valor máximo de active energy
             - [x] Path al archivo del gráfico
         """
+        if self.graph_filename == "":
+            print("ERROR: No graph file found. Try make_graph first.")
+            raise Exception("Empty graph_filename")
 
         # Set the graph filename so we can add it to txt_content
         graph_filename = os.path.join(self.output_dir, self.graph_filename)
