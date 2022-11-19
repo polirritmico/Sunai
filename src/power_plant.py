@@ -9,10 +9,9 @@ import datetime
 
 
 class PowerPlant():
-    def __init__(self, filename="default", outdir=""):
+    def __init__(self, filename: str()="default", outdir: str()=""):
         self.filename = filename
-        self.grap_filename = None
-        self.output_dir = self.default_output_dir() if outdir == "" else outdir
+        self.output_dir = outdir
 
         self.datafile = None
         self.active_energy = None
@@ -21,6 +20,27 @@ class PowerPlant():
 
         self.graph_data = None
         self.grap_line = None
+
+
+    def set_default_output_dir(self):
+        #self.filename → test/cases/data_plantas_python_1_1.xlsx
+        subfolder = os.path.splitext(self.filename)[0].split('/')[-1]
+        outdir = "output" + '/' + subfolder + '/'
+        self.output_dir = outdir
+        return outdir
+
+
+    def check_output_dir(self):
+        """Check if the output dir exist or is setted, else set or create it."""
+        if self.output_dir == "":
+            self.set_default_output_dir()
+        try:
+            if os.path.exists(self.output_dir):
+                return
+            os.makedirs(self.output_dir)
+        except Exception as err:
+            print("ERROR: Can't read/write the output folder")
+            raise err
 
 
     def load_file(self):
@@ -82,25 +102,6 @@ class PowerPlant():
         return int(self.active_power["active_power_im"].sum())
 
 
-    def default_output_dir(self):
-        #self.filename → test/cases/data_plantas_python_1_1.xlsx
-        subfolder = os.path.splitext(self.filename)[0].split('/')[-1]
-        outdir = "output" + '/' + subfolder + '/'
-        return outdir
-
-
-    def check_output_dir(self):
-        """Check if the output dir exist, else create it."""
-        try:
-            if os.path.exists(self.output_dir):
-                return
-            os.makedirs(self.output_dir)
-        except Exception as err:
-            print("ERROR: Can't read/write the output folder")
-            raise err
-
-
-
     def make_summary_txt(self):
         """
         Generar txt con:
@@ -109,20 +110,28 @@ class PowerPlant():
             - [x] Valor máximo de active energy
             - [x] Path al archivo del gráfico
         """
+        # First, set the filename so we can add it to txt_content
         self.check_output_dir()
         filename = self.output_dir + "daily_summary.txt"
+        filename = os.path.abspath(filename)
+
+        active_power_per_day = self.active_power_sum_by_day()
+        min_active_energy = self.min_active_energy()
+        max_active_energy = self.max_active_energy()
 
         txt_content = [
-            str(self.active_power_sum_by_day()),
-            str(self.min_active_energy()),
-            str(self.max_active_energy()),
-            filename, 
+            "Daily Summary\n=============\n"
+            "Input file:\n'{}'\n".format(self.filename),
+            "Active power per day sum: {:9}".format(active_power_per_day),
+            "Minimum active energy: {:12}".format(min_active_energy),
+            "Maximum active energy: {:12}".format(max_active_energy),
+            "\nGenerated graph full filename:\n'{}'".format(filename), 
         ]
         file_data = "\n".join(txt_content)
 
-        return file_data
+
         try:
-            with open(filename, encoding="utf-8") as file:
+            with open(filename, "w", encoding="utf-8") as file:
                 file.write(file_data)
         except Exception as err:
             print("ERROR: Can't write the summary file")

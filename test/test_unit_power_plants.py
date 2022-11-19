@@ -9,8 +9,8 @@ from src.power_plant import PowerPlant
 #@unittest.skip
 class TestPowerPlant(unittest.TestCase):
     def setUp(self):
-        self.power_plant = PowerPlant()
-        self.power_plant.filename = "test/cases/data_plantas_python_1_1.xlsx"
+        filename = "test/cases/data_plantas_python_1_1.xlsx"
+        self.power_plant = PowerPlant(filename)
 
 
     #@unittest.skip
@@ -89,26 +89,38 @@ class TestPowerPlant(unittest.TestCase):
         expected = "output/dummy/"
 
         self.power_plant.filename = "test/cases/dummy.xlsx"
-        output = self.power_plant.default_output_dir()
+        output = self.power_plant.set_default_output_dir()
         self.assertEqual(expected, output)
 
         self.power_plant.filename = "any_folder/dummy.xlsx"
-        output = self.power_plant.default_output_dir()
+        output = self.power_plant.set_default_output_dir()
         self.assertEqual(expected, output)
 
         self.power_plant.filename = "dummy.xlsx"
-        output = self.power_plant.default_output_dir()
+        output = self.power_plant.set_default_output_dir()
         self.assertEqual(expected, output)
 
 
     #@unittest.skip
     def test_make_summary_txt_data(self):
-        filename = "output/datas_plantas_python_1_1/daily_summary.txt"
-        expected="3664916\n46870800\n76978296\n" + filename
+        expected_1 = "3664916"
+        expected_2 = "46870800"
+        expected_3 = "76978296"
+        filename = "output/data_plantas_python_1_1/daily_summary.txt"
+
         self.power_plant.load_file()
+        self.power_plant.output_dir = "test"
+        self.power_plant.set_default_output_dir()
         output = self.power_plant.make_summary_txt()
 
-        self.assertEqual(expected, output)
+        self.assertIn(expected_1, output)
+        self.assertIn(expected_2, output)
+        self.assertIn(expected_3, output)
+        self.assertIn(filename, output)
+
+        import os
+        self.assertTrue(os.path.exists(filename))
+        self.assert
 
 
     @unittest.skip
