@@ -67,6 +67,10 @@ test $ ./performance_test.py
 
 ## Diseño
 
+![Diseño básico](/docs/basic_design.png)
+
+En términos generales las clases PowerPlant y Day son wrappers de clases Pandas.
+
 ### Instrucciones y consideraciones:
 
 - Cada archivo tiene la generación de energía de 1 día completo de una planta.
@@ -95,13 +99,6 @@ Global:
     se mostrará solo 1 vez en lugar de repetir la misma salida por cada archivo
     (por ejemplo, 1000 veces los mismo).
 
-
-## Arquitectura
-
-![Diseño básico](/docs/basic_design.png)
-
-En términos generales las clases PowerPlant y Day son wrappers de clases de
-Pandas.
 
 ## Árbol de directorios del proyecto
 
