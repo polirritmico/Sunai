@@ -89,5 +89,10 @@ class TestSunaiChallenge(unittest.TestCase):
 
         self.assertEqual(expected, output)
 
+        expected = "321"
+        output = self.sunai.power_plants[2].days_collection[1].plant_id
+        self.assertEqual(expected, output)
+
+
 
 
