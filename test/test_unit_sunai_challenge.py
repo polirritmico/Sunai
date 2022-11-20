@@ -20,8 +20,8 @@ class TestSunaiChallenge(unittest.TestCase):
         args = [expected_input, expected_output]
         parsed_args = self.sunai.parse_args(args)
 
-        self.assertEqual([expected_input], parsed_args.input_folder)
-        self.assertEqual([expected_output], parsed_args.output_folder)
+        self.assertEqual(expected_input, parsed_args.input_folder[0])
+        self.assertEqual(expected_output, parsed_args.output_folder[0])
 
 
     @unittest.skip
