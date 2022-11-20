@@ -9,9 +9,10 @@ import datetime
 
 
 class PowerPlant():
-    def __init__(self, input_dir: str, output_dir: str="output"):
+    def __init__(self, plant_id: str, input_dir: str, output_dir: str="output"):
+        self.id = plant_id
         self.input_dir = input_dir
-        self.output_dir = outdir
+        self.output_dir = output_dir
 
         self.days_collection = []
 

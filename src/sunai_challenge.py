@@ -42,6 +42,9 @@ class SunaiChallenge():
         self.force_mode = args.force_mode
 
         self.get_input_files()
+        days_collection = self.make_days_by_plant()
+        self.make_power_plants(days_collection)
+
 
 
     def parse_args(self, argv=None):
@@ -109,8 +112,32 @@ class SunaiChallenge():
         return self.input_files
 
 
-    def make_power_plants(self):
-        pass
+    def make_days_by_plant(self):
+        days_collection = {}
+        for file in self.input_files:
+            day = Day(file)
+            plant_id = day.get_plant_id_from_file()
+            if plant_id not in days_collection:
+                days_collection[plant_id] = []
+            days_collection[plant_id] = [day]
+        return days_collection
+
+
+    def make_power_plants(self, days):
+        plants = []
+        for plant_id in days.keys():
+            plant = PowerPlant(plant_id, self.input_folder, self.output_folder)
+            plant.days_collection = days[plant_id]
+            plants.append(plant)
+        self.power_plants = plants
+        return plants
+
+
+    def get_power_plants_id(self):
+        plants_id = []
+        for plant in self.power_plants:
+             plants_id.append(plant.id)
+        return plants_id
 
 
     def make_graphs_filename(self):
@@ -125,10 +152,6 @@ class SunaiChallenge():
         pass
 
         return parser.parse_args(argv)
-
-
-    def make_power_plants(self):
-        pass
 
 
     def make_graphs_filename(self):

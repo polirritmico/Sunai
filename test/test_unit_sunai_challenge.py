@@ -11,6 +11,7 @@ from src.sunai_challenge import SunaiChallenge
 class TestSunaiChallenge(unittest.TestCase):
     def setUp(self):
         self.sunai = SunaiChallenge()
+        self.sunai.input_folder = "test/cases"
 
 
     #@unittest.skip
@@ -52,11 +53,31 @@ class TestSunaiChallenge(unittest.TestCase):
             "test/cases/small_data.xlsx",
             "test/cases/subfolder/dummy.xlsx",
         ]
-        self.sunai.input_folder = "test/cases"
         output = self.sunai.get_input_files()
         output.sort()
         expected.sort()
 
         self.assertEqual(expected, output)
+
+
+    #@unittest.skip
+    def test_get_days_by_plant(self):
+        expected = 4
+        self.sunai.get_input_files()
+        output = len(self.sunai.make_days_by_plant())
+        self.assertEqual(expected, output)
+
+
+    #@unittest.skip
+    def test_make_power_plants(self):
+        expected = ["218", "31", "32", "321" ]
+        self.sunai.get_input_files()
+        days_collection = self.sunai.make_days_by_plant()
+        self.sunai.make_power_plants(days_collection)
+        output = self.sunai.get_power_plants_id()
+        output.sort()
+
+        self.assertEqual(expected, output)
+
 
 
