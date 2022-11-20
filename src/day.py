@@ -26,18 +26,20 @@ class Day():
         try:
             datafile = pd.read_excel(self.filename, parse_dates=True,
                                      usecols="A,B,L,M").fillna(0)
-            plant_id = pd.read_excel(self.filename, index_col=None,
-                                     usecols = "C", header = 1, nrows=0)
         except Exception as err:
             print("ERROR: Can't read the file: ")
             raise err
 
         # Parse the data
         self.data = datafile
-        self.plant_id = str(plant_id.columns.values[0])
         self.active_energy = datafile[["id_i", "active_energy_im"]]
         self.active_power = datafile.set_index("fecha_im")[["id_i", "active_power_im"]]
 
+
+    def get_plant_id_from_file(self):
+        plant_id = pd.read_excel(self.filename, index_col=None, usecols = "C",
+                                 header = 1, nrows=0)
+        self.plant_id = str(plant_id.columns.values[0])
         return self.plant_id
 
 
