@@ -40,6 +40,9 @@ class Day():
         plant_id = pd.read_excel(self.filename, index_col=None, usecols = "C",
                                  header = 1, nrows=0)
         self.plant_id = str(plant_id.columns.values[0])
+        if self.plant_id is None or self.plant_id == "":
+            print("ERROR: Can't get plant_id")
+            raise Exception("Missing plant_id data")
         return self.plant_id
 
 
