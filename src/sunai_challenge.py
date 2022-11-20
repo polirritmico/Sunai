@@ -91,16 +91,18 @@ class SunaiChallenge():
         parser.add_argument(
             "-v", "--version",
             action = "version",
-            version="%(prog)s v" + __version__
+            version="%(prog)s v" + __version__,
         )
         return parser.parse_args(argv)
 
 
-    def read_files(self):
+    def get_input_files(self):
         """Recursively read files in the input folder."""
-        files = []
-        return files
-
+        files_collection = []
+        for path, _, files in os.walk(self.input_folder):
+            for file in files:
+                files_collection.append((os.path.join(path, file)))
+        return files_collection
 
 
     def make_power_plants(self):

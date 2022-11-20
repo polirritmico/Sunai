@@ -43,13 +43,18 @@ class TestSunaiChallenge(unittest.TestCase):
         self.assertEqual(expected_force, parsed_args.force_mode)
 
 
-    @unittest.skip
-    def test_read_files(self):
-        expected = ["data_plantas_python_1_1.xlsx",
-                "data_plantas_python_2.xlsx",
-                "dummy.xlsx",
-                "small_data.xlsx"]
-        output = self.sunai.files_collection
+    #@unittest.skip
+    def test_read_input_files(self):
+        expected = [
+            "test/cases/data_plantas_python_1_1.xlsx",
+            "test/cases/data_plantas_python_2.xlsx",
+            "test/cases/dummy.xlsx",
+            "test/cases/small_data.xlsx"
+        ]
+        self.sunai.input_folder = "test/cases"
+        output = self.sunai.get_input_files()
+        output.sort()
+        expected.sort()
 
         self.assertEqual(expected, output)
 
