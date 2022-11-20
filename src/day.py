@@ -15,7 +15,6 @@ class Day():
         self.active_energy = None
         self.active_power = None
         self.dates = None
-        self.plant_id = ""
 
         self.graph = None
         self.graph_filename = None
@@ -68,7 +67,7 @@ class Day():
         return int(self.active_power["active_power_im"].sum())
 
 
-    def make_graph(self):
+    def make_graph(self, title):
         """
         Generar gráfico line chart:
             - Eje x fecha
@@ -76,14 +75,14 @@ class Day():
             - Guardar archivo
         """
         self.graph = self.active_power.plot(
-                kind="line",
-                title="Active power by inversor",
-                grid=True,
-                #ylabel="Active power",
-                xlabel="Timestamp",
-                #x_compat=True,
-                #color="tab:orange",
-                #legend=False,
+                kind = "line",
+                title = title,
+                grid = True,
+                #ylabel = "Active power",
+                xlabel = "Timestamp",
+                #x_compat = True,
+                #color = "tab:orange",
+                #legend = False,
         )
 
 

@@ -155,7 +155,7 @@ class TestDay(unittest.TestCase):
         output_filename = "test/output_image_file.jpg"
         day = Day(input_datafile)
         day.load_file()
-        day.make_graph()
+        day.make_graph("test_make_graph")
         day.save_graph(output_filename)
 
         filename = os.path.abspath(day.graph_filename)
