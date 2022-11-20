@@ -107,10 +107,10 @@ class TestDay(unittest.TestCase):
         expected_1 = "3664916"
         expected_2 = "46870800"
         expected_3 = "76978296"
-        filename = self.day.graph_filename
+        filename = "test/cases/output_test_make_summary_data_graph.jpg"
 
         self.day.load_file()
-        output = self.day.make_summary()
+        output = self.day.make_summary(filename)
 
         self.assertIn(expected_1, output)
         self.assertIn(expected_2, output)
@@ -122,9 +122,8 @@ class TestDay(unittest.TestCase):
     def test_save_summary_txt(self):
         filename = "test/daily_summary.txt"
         self.day.load_file()
-        self.day.make_summary()
-        self.day.summary_data_filename = filename
-        self.day.save_summary_txt()
+        self.day.make_summary(filename)
+        self.day.save_summary_txt(filename)
 
         self.assertTrue(os.path.exists(filename))
         # Clean created file
@@ -141,10 +140,9 @@ class TestDay(unittest.TestCase):
         day = Day(input_datafile)
         day.load_file()
         day.make_graph()
-        day.graph_filename = output_filename
-        day.save_graph()
+        day.save_graph(output_filename)
 
-        filename = os.path.abspath(day.graph_filename)
+        filename = os.path.abspath(output_filename)
         image = Image.open(filename)
         output_format = image.format
         output_size = image.size

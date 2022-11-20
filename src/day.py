@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-import os
+#import os
 import pandas as pd
 import datetime
 #import time
@@ -89,18 +89,15 @@ class Day():
         )
 
 
-    def save_graph(self):
-        if self.graph_filename == "":
-            print("ERROR: Missing graph filename.")
-            raise Exception("graph_filename is empty")
+    def save_graph(self, filename):
         try:
-            self.graph.get_figure().savefig(self.graph_filename)
+            self.graph.get_figure().savefig(filename)
         except Exception as err:
             print("ERROR: Can't save the graph to disk.")
             raise err
 
 
-    def make_summary(self):
+    def make_summary(self, graph_filename):
         """
         Generar txt con:
             - [x] Suma por día del active power
@@ -113,7 +110,7 @@ class Day():
         #    raise Exception("Empty graph_filename")
 
         # Set the graph filename so we can add it to txt_content
-        graph_filename = os.path.abspath(self.graph_filename)
+        #graph_filename = os.path.abspath(self.graph_filename)
 
         active_power_per_day = self.active_power_sum_by_day()
         min_active_energy = self.min_active_energy()
@@ -131,15 +128,11 @@ class Day():
         return self.summary_data
 
 
-    def save_summary_txt(self):
+    def save_summary_txt(self, filename):
         if self.summary_data is None:
             print("ERROR: No summary data")
             raise Exception("Missing summary data, try make_summary_txt()")
-        if self.summary_data_filename == "":
-            print("ERROR: Missing summary filename.")
-            raise Exception("summary_filename is empty")
 
-        filename = os.path.abspath(self.summary_data_filename)
         try:
             with open(filename, "w", encoding="utf-8") as file:
                 file.write(self.summary_data)
