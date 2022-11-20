@@ -10,7 +10,7 @@ from PIL.ExifTags import TAGS
 from src.day import Day
 
 
-@unittest.skip
+#@unittest.skip
 class TestDay(unittest.TestCase):
     def setUp(self):
         filename = "test/cases/data_plantas_python_1_1.xlsx"
@@ -21,12 +21,14 @@ class TestDay(unittest.TestCase):
     #@unittest.skip
     def test_load_xlsx_file_dummy(self):
         expected = "   id_i   fecha_im  active_energy_im  active_power_im\n0    42 2022-11-17         123456789        987654321"
+        expected_plant_id = "321"
         self.day.filename = "test/cases/dummy.xlsx"
-        self.day.load_file()
+        output_plant_id = self.day.load_file()
         output = str(self.day.data)
         print(output)
 
         self.assertEqual(expected, output)
+        self.assertEqual(expected_plant_id, output_plant_id)
 
 
     #@unittest.skip
