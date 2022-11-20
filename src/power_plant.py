@@ -36,6 +36,10 @@ class PowerPlant():
             raise err
 
 
+    def setup_days_outputs_filenames(self):
+        pass
+
+
     def console_output(self):
         """
         Output consola:

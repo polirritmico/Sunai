@@ -17,8 +17,10 @@ class Day():
         self.dates = None
 
         self.graph = None
-        self.graph_filename = None
+        self.graph_title = ""
+        self.graph_filename = ""
         self.summary_data = None
+        self.summary_data_filename = ""
 
 
     def load_file(self):
@@ -67,7 +69,7 @@ class Day():
         return int(self.active_power["active_power_im"].sum())
 
 
-    def make_graph(self, title):
+    def make_graph(self):
         """
         Generar gráfico line chart:
             - Eje x fecha
@@ -76,7 +78,7 @@ class Day():
         """
         self.graph = self.active_power.plot(
                 kind = "line",
-                title = title,
+                title = self.graph_title,
                 grid = True,
                 #ylabel = "Active power",
                 xlabel = "Timestamp",

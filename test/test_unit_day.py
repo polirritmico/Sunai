@@ -15,7 +15,9 @@ class TestDay(unittest.TestCase):
     def setUp(self):
         filename = "test/cases/data_plantas_python_1_1.xlsx"
         self.day = Day(filename)
-        self.day.graph_filename = "test/output/output_test_graph.jpg"
+        self.day.graph_filename = "test/output/plantid_date.jpg"
+        self.day.graph_title = "test_day_title"
+        self.day.summary_data_filename = "test/output/plantid_date_summary.txt"
 
 
     #@unittest.skip
@@ -123,7 +125,7 @@ class TestDay(unittest.TestCase):
         expected_1 = "3664916"
         expected_2 = "46870800"
         expected_3 = "76978296"
-        filename = "test/output/output_test_graph.jpg"
+        filename = self.day.graph_filename
 
         self.day.load_file()
         output = self.day.make_summary()
@@ -155,7 +157,7 @@ class TestDay(unittest.TestCase):
         output_filename = "test/output_image_file.jpg"
         day = Day(input_datafile)
         day.load_file()
-        day.make_graph("test_make_graph")
+        day.make_graph()
         day.save_graph(output_filename)
 
         filename = os.path.abspath(day.graph_filename)

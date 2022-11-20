@@ -46,7 +46,6 @@ class SunaiChallenge():
         self.make_power_plants(days_collection)
 
 
-
     def parse_args(self, argv=None):
         parser = argparse.ArgumentParser(
             prog = "SunaiChallenge",
@@ -145,28 +144,7 @@ class SunaiChallenge():
         return plants_id
 
 
-    def make_graphs_filename(self):
-        pass
-
-
-    def make_summaries_filename(self):
-        pass
-
-
     def print_summary(self):
         pass
 
-        return parser.parse_args(argv)
-
-
-    def make_graphs_filename(self):
-        pass
-
-
-    def make_summaries_filename(self):
-        pass
-
-
-    def print_summary(self):
-        pass
 
