@@ -1,10 +1,8 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-#import os
 import pandas as pd
 import datetime
-#import time
 
 
 class Day():
@@ -100,18 +98,11 @@ class Day():
     def make_summary(self, graph_filename):
         """
         Generar txt con:
-            - [x] Suma por día del active power
-            - [x] Valor mínimo de active energy
-            - [x] Valor máximo de active energy
-            - [x] Path al archivo del gráfico
+            - Suma por día del active power
+            - Valor mínimo de active energy
+            - Valor máximo de active energy
+            - Path al archivo del gráfico
         """
-        #if self.graph_filename is None or self.graph_filename == "":
-        #    print("ERROR: No graph file found. Try make_graph first.")
-        #    raise Exception("Empty graph_filename")
-
-        # Set the graph filename so we can add it to txt_content
-        #graph_filename = os.path.abspath(self.graph_filename)
-
         active_power_per_day = self.active_power_sum_by_day()
         min_active_energy = self.min_active_energy()
         max_active_energy = self.max_active_energy()

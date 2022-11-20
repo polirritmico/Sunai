@@ -97,8 +97,7 @@ class SunaiChallenge():
         )
         parser = parser.parse_args(argv)
         if parser.graphs_folder[0] == "":
-            parser.graphs_folder[0] = os.path.join(parser.output_folder,
-                                                   "images")
+            parser.graphs_folder[0] = os.path.join(parser.output_folder, "images")
         return parser
 
 
@@ -122,7 +121,7 @@ class SunaiChallenge():
             plant_id = day.get_plant_id_from_file()
             if plant_id not in days_collection:
                 days_collection[plant_id] = []
-            days_collection[plant_id] = [day]
+            days_collection[plant_id].append(day)
         return days_collection
 
 

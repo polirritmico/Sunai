@@ -35,3 +35,9 @@ class TestPowerPlant(unittest.TestCase):
         os.removedirs(self.power_plant.graph_output_dir)
 
 
+    #@unittest.skip
+    def test_set_day_output_filenames(self):
+        expected_summary_file = "test/cases/output/0031_2022-11-10_summary.txt"
+        expected_graph_file = "test/cases/output/images/0031-21-11-10.jpg"
+
+

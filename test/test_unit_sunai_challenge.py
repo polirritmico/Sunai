@@ -61,10 +61,20 @@ class TestSunaiChallenge(unittest.TestCase):
 
 
     #@unittest.skip
-    def test_get_days_by_plant(self):
+    def test_make_days_by_plant(self):
         expected = 4
         self.sunai.get_input_files()
-        output = len(self.sunai.make_days_by_plant())
+        plant = self.sunai.make_days_by_plant()
+        output = len(plant)
+        self.assertEqual(expected, output)
+
+        expected = 2
+        output = len(plant["321"])
+        self.assertEqual(expected, output)
+
+        expected = 1
+        print(plant)
+        output = len(plant["218"])
         self.assertEqual(expected, output)
 
 
