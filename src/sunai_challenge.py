@@ -30,6 +30,8 @@ class SunaiChallenge():
         self.files_collection = []
         self.power_plants = []
 
+        self.force_mode = False
+
 
     def run(self):
         # Get all variables
@@ -37,6 +39,9 @@ class SunaiChallenge():
         self.input_folder = args.input_folder[0]
         self.output_folder = args.output_folder[0]
         self.graphs_folder = args.graphs_folder[0]
+        self.force_mode = args.force_mode
+
+        self.files_collection = self.read_files()
 
 
     def parse_args(self, argv=None):
@@ -44,7 +49,8 @@ class SunaiChallenge():
             prog = "SunaiChallenge",
             usage = "sunai_challenge [options] <input_folder> [<output_folder>]",
             description = "Process power plant data and make info and graphs.",
-            epilog = "My Sunai application project"
+            epilog = "Sunai application project " \
+                     "by Eduardo Bray (ejbray@uc.cl)"
         )
         parser.add_argument(
             "input_folder",
@@ -91,7 +97,10 @@ class SunaiChallenge():
 
 
     def read_files(self):
-        pass
+        """Recursively read files in the input folder."""
+        files = []
+        return files
+
 
 
     def make_power_plants(self):

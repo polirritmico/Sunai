@@ -18,12 +18,14 @@ class TestSunaiChallenge(unittest.TestCase):
         expected_input = "input_test_folder"
         expected_output = "output_TEST"
         expected_graph = "alternative_folder"
-        args = [expected_input, expected_output, "-g", expected_graph]
+        expected_force_mode = True
+        args = ["-F", "-g", expected_graph, expected_input, expected_output]
         parsed_args = self.sunai.parse_args(args)
 
         self.assertEqual(expected_input, parsed_args.input_folder[0])
         self.assertEqual(expected_output, parsed_args.output_folder)
         self.assertEqual(expected_graph, parsed_args.graphs_folder[0])
+        self.assertEqual(expected_force_mode, parsed_args.force_mode)
 
 
     #@unittest.skip
