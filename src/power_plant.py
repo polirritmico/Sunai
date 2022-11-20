@@ -36,8 +36,15 @@ class PowerPlant():
             raise err
 
 
+    def load_days_data(self):
+        for day in self.days_collection:
+            day.load_file()
+
+
     def setup_days_outputs_filenames(self):
-        pass
+        for day in self.days_collection:
+            pass
+
 
 
     def console_output(self):

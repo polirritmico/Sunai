@@ -19,10 +19,12 @@ class TestPowerPlant(unittest.TestCase):
         graph_output_dir = "test/output/images"
         self.power_plant = PowerPlant(plant_id, input_dir, output_dir,
                                       graph_output_dir)
-        day_1 = Day(filename_1)
-        day_2 = Day(filename_2)
-        self.power_plant.days_collection.append(day_1)
-        self.power_plant.days_collection.append(day_2)
+        self.day1 = Day(filename_1)
+        self.day2 = Day(filename_2)
+        self.day1.get_plant_id_from_file()
+        self.day2.get_plant_id_from_file()
+        self.power_plant.days_collection.append(self.day1)
+        self.power_plant.days_collection.append(self.day2)
 
 
     #@unittest.skip
@@ -37,6 +39,22 @@ class TestPowerPlant(unittest.TestCase):
 
         # Remove test folders
         os.removedirs(self.power_plant.graph_output_dir)
+
+
+    #@unittest.skip
+    def test_load_days_data(self):
+        expected = "321"
+        input_dir = "test/cases/subfolder"
+        output_dir = "test/output"
+        graph_output_dir = "test/output/images"
+
+        power_plant = PowerPlant("321", input_dir, output_dir, graph_output_dir)
+        power_plant.days_collection.append(self.day1)
+        power_plant.days_collection.append(self.day2)
+        power_plant.load_days_data()
+
+        output = power_plant.days_collection[0].plant_id
+        self.assertEqual(expected, output)
 
 
     #@unittest.skip
