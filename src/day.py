@@ -15,6 +15,7 @@ class Day():
         self.active_energy = None
         self.active_power = None
         self.dates = None
+        self.plant_id = ""
 
         self.graph = None
         self.graph_filename = None
@@ -25,7 +26,6 @@ class Day():
         try:
             datafile = pd.read_excel(self.filename, parse_dates=True,
                                      usecols="A,B,L,M").fillna(0)
-
             plant_id = pd.read_excel(self.filename, index_col=None,
                                      usecols = "C", header = 1, nrows=0)
         except Exception as err:
@@ -34,9 +34,11 @@ class Day():
 
         # Parse the data
         self.data = datafile
+        self.plant_id = str(plant_id.columns.values[0])
         self.active_energy = datafile[["id_i", "active_energy_im"]]
         self.active_power = datafile.set_index("fecha_im")[["id_i", "active_power_im"]]
-        return str(plant_id.columns.values[0])
+
+        return self.plant_id
 
 
     def get_active_energy_value(self, index) -> int():
