@@ -1,7 +1,9 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
+
 import os
+import argparse
 
 from src.power_plant import PowerPlant
 from src.day import Day
@@ -9,12 +11,16 @@ from src.day import Day
 
 class SunaiChallenge():
     def __init__(self):
-        self.input_folder = input_folder
-        self.output_folder = output_folder
+        self.input_folder = None
+        self.output_folder = None
         self.graphs_folder = None
 
         self.files_collection = []
         self.power_plants = []
+
+
+    def run(self):
+        pass
 
 
     def read_files(self):

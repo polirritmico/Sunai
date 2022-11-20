@@ -4,11 +4,11 @@
 import unittest
 import os
 
-from src.power_plant import PowerPlant
+from src.sunai_challenge import SunaiChallenge
 
 
 #@unittest.skip
-class TestPowerPlant(unittest.TestCase):
+class TestSunaiChallenge(unittest.TestCase):
     def setUp(self):
         pass
 
@@ -20,7 +20,7 @@ class TestPowerPlant(unittest.TestCase):
                 "dummy.xlsx",
                 "small_data.xlsx"]
 
-        power_plant = PowerPlant()
+        sunai = SunaiChallenge()
         output = power_plant.files_collection
 
         self.assertEqual(expected, output)
