@@ -23,7 +23,11 @@ class Day():
 
     def load_file(self):
         try:
-            datafile = pd.read_excel(self.filename, parse_dates=True).fillna(0)
+            datafile = pd.read_excel(self.filename, parse_dates=True,
+                                     usecols="A,B,L,M").fillna(0)
+
+            plant_id = pd.read_excel(self.filename, index_col=None,
+                                     usecols = "C", header = 1, nrows=0)
         except Exception as err:
             print("ERROR: Can't read the file: ")
             raise err
@@ -32,6 +36,7 @@ class Day():
         self.data = datafile
         self.active_energy = datafile[["id_i", "active_energy_im"]]
         self.active_power = datafile.set_index("fecha_im")[["id_i", "active_power_im"]]
+        return str(plant_id.columns.values[0])
 
 
     def get_active_energy_value(self, index) -> int():
