@@ -23,12 +23,16 @@ class PowerPlant():
         if self.output_dir == "":
             raise Warning("ERROR: No output directory assigned")
             return
+        if self.graph_output_dir == "":
+            raise Warning("ERROR: No graphs output directory assigned")
+            return
         try:
-            if os.path.exists(self.output_dir):
-                return
-            os.makedirs(self.output_dir)
+            if not os.path.exists(self.output_dir):
+                os.makedirs(self.output_dir)
+            if not os.path.exists(self.graph_output_dir):
+                os.makedirs(self.graph_output_dir)
         except Exception as err:
-            print("ERROR: Can't read/write the output folder")
+            print("ERROR: Can't read/write output folder")
             raise err
 
 
