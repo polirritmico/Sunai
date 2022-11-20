@@ -27,7 +27,7 @@ class SunaiChallenge():
         self.output_folder = None
         self.graphs_folder = None
 
-        self.files_collection = []
+        self.input_files = []
         self.power_plants = []
 
         self.force_mode = False
@@ -41,7 +41,7 @@ class SunaiChallenge():
         self.graphs_folder = args.graphs_folder[0]
         self.force_mode = args.force_mode
 
-        self.files_collection = self.read_files()
+        self.get_input_files()
 
 
     def parse_args(self, argv=None):
@@ -97,12 +97,16 @@ class SunaiChallenge():
 
 
     def get_input_files(self):
-        """Recursively read files in the input folder."""
+        """Recursively get xlsx files in the input folder."""
         files_collection = []
         for path, _, files in os.walk(self.input_folder):
             for file in files:
+                # Check file extension
+                if os.path.splitext(file)[-1] != ".xlsx":
+                    continue
                 files_collection.append((os.path.join(path, file)))
-        return files_collection
+        self.input_files = files_collection
+        return self.input_files
 
 
     def make_power_plants(self):
@@ -121,10 +125,6 @@ class SunaiChallenge():
         pass
 
         return parser.parse_args(argv)
-
-
-    def read_files(self):
-        pass
 
 
     def make_power_plants(self):
