@@ -49,7 +49,8 @@ class TestSunaiChallenge(unittest.TestCase):
             "test/cases/data_plantas_python_1_1.xlsx",
             "test/cases/data_plantas_python_2.xlsx",
             "test/cases/dummy.xlsx",
-            "test/cases/small_data.xlsx"
+            "test/cases/small_data.xlsx",
+            "test/cases/subfolder/dummy.xlsx",
         ]
         self.sunai.input_folder = "test/cases"
         output = self.sunai.get_input_files()
