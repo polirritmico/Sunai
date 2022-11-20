@@ -20,7 +20,7 @@ class SunaiChallenge():
 
 
     def run(self):
-        pass
+        print("OK")
 
 
     def read_files(self):

@@ -21,7 +21,7 @@ class TestSunaiChallenge(unittest.TestCase):
                 "small_data.xlsx"]
 
         sunai = SunaiChallenge()
-        output = power_plant.files_collection
+        output = sunai.files_collection
 
         self.assertEqual(expected, output)
 

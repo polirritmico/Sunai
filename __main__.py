@@ -5,23 +5,25 @@
 import sys
 import argparse
 import traceback
-import time
+#import time
 
-from src.power_plant import PowerPlant
+from src.sunai_challenge import SunaiChallenge
 
 
 def main():
-    print("Begin")
-    time_begin = time.time()
+    #if len(sys.argv) != 2:
+    #    print("Error: Check usage: ./sunai_challenge.py -h")
+    #    sys.exit()
+    try:
+        sunai_challenge = SunaiChallenge()
+        sunai_challenge.run()
 
-    # power_plant = PowerPlant("test/cases/small_data.xlsx")
-    power_plant = PowerPlant("test/cases/data_plantas_python_1_1.xlsx")
-    power_plant.load_file()
-    power_plant.make_graph()
-    power_plant.save_graph("test/cases/output_image_file.jpg")
+        sys.exit()
+    except Exception:
+        print("Catched exception: \n  {}".format(traceback.format_exc()))
+        print("Closing SunaiChallenge...")
+        sys.exit()
 
-    time_end = time.time()
-    print("Done in {:0.2f}s".format(time_end - time_begin))
 
 
 if __name__ == "__main__":
