@@ -76,7 +76,7 @@ class SunaiChallenge():
             "-g", "--graphs-output",
             metavar = "<folder>",
             dest = "graphs_folder",
-            default = ["images"],
+            default = [""],
             type = str,
             nargs = 1,
             required = False,
@@ -96,7 +96,11 @@ class SunaiChallenge():
             action = "version",
             version="%(prog)s v" + __version__,
         )
-        return parser.parse_args(argv)
+        parser = parser.parse_args(argv)
+        if parser.graphs_folder[0] == "":
+            parser.graphs_folder[0] = os.path.join(parser.output_folder,
+                                                   "images")
+        return parser
 
 
     def get_input_files(self):
@@ -126,7 +130,8 @@ class SunaiChallenge():
     def make_power_plants(self, days):
         plants = []
         for plant_id in days.keys():
-            plant = PowerPlant(plant_id, self.input_folder, self.output_folder)
+            plant = PowerPlant(plant_id, self.input_folder, self.output_folder,
+                               self.graphs_folder)
             plant.days_collection = days[plant_id]
             plants.append(plant)
         self.power_plants = plants

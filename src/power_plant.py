@@ -9,15 +9,17 @@ import datetime
 
 
 class PowerPlant():
-    def __init__(self, plant_id: str, input_dir: str, output_dir: str="output"):
+    def __init__(self, plant_id: str, input_dir: str, output_dir: str,
+                 graph_output_dir: str):
         self.id = plant_id
         self.input_dir = input_dir
         self.output_dir = output_dir
+        self.graph_output_dir = graph_output_dir
 
         self.days_collection = []
 
 
-    def setup_output_dir(self):
+    def setup_output_path(self):
         if self.output_dir == "":
             raise Warning("ERROR: No output directory assigned")
             return

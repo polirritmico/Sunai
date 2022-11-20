@@ -33,7 +33,7 @@ class TestSunaiChallenge(unittest.TestCase):
     def test_argparse_defaults(self):
         expected_input = "input_test_folder"
         expected_output = "output"
-        expected_graph = "images"
+        expected_graph = "output/images"
         expected_force = False
         args = [expected_input]
         parsed_args = self.sunai.parse_args(args)
