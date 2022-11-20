@@ -17,11 +17,28 @@ class TestSunaiChallenge(unittest.TestCase):
     def test_argparse(self):
         expected_input = "input_test_folder"
         expected_output = "output_TEST"
-        args = [expected_input, expected_output]
+        expected_graph = "alternative_folder"
+        args = [expected_input, expected_output, "-g", expected_graph]
         parsed_args = self.sunai.parse_args(args)
 
         self.assertEqual(expected_input, parsed_args.input_folder[0])
-        self.assertEqual(expected_output, parsed_args.output_folder[0])
+        self.assertEqual(expected_output, parsed_args.output_folder)
+        self.assertEqual(expected_graph, parsed_args.graphs_folder[0])
+
+
+    #@unittest.skip
+    def test_argparse_defaults(self):
+        expected_input = "input_test_folder"
+        expected_output = "output"
+        expected_graph = "images"
+        expected_force = False
+        args = [expected_input]
+        parsed_args = self.sunai.parse_args(args)
+
+        self.assertEqual(expected_input, parsed_args.input_folder[0])
+        self.assertEqual(expected_output, parsed_args.output_folder)
+        self.assertEqual(expected_graph, parsed_args.graphs_folder[0])
+        self.assertEqual(expected_force, parsed_args.force_mode)
 
 
     @unittest.skip
