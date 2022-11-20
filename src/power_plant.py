@@ -21,10 +21,10 @@ class PowerPlant():
 
     def setup_output_path(self):
         if self.output_dir == "":
-            raise Warning("ERROR: No output directory assigned")
+            raise Exception("ERROR: No output directory assigned")
             return
         if self.graph_output_dir == "":
-            raise Warning("ERROR: No graphs output directory assigned")
+            raise Exception("ERROR: No graphs output directory assigned")
             return
         try:
             if not os.path.exists(self.output_dir):

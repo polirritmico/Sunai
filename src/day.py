@@ -14,7 +14,8 @@ class Day():
 
         self.active_energy = None
         self.active_power = None
-        self.dates = None
+        #self.dates = None
+        self.plant_id = ""
 
         self.graph = None
         self.graph_title = ""
@@ -88,10 +89,12 @@ class Day():
         )
 
 
-    def save_graph(self, filename):
-        self.graph_filename = filename
+    def save_graph(self):
+        if self.graph_filename == "":
+            print("ERROR: Missing graph filename.")
+            raise Exception("graph_filename is empty")
         try:
-            self.graph.get_figure().savefig(filename)
+            self.graph.get_figure().savefig(self.graph_filename)
         except Exception as err:
             print("ERROR: Can't save the graph to disk.")
             raise err
@@ -128,14 +131,15 @@ class Day():
         return self.summary_data
 
 
-    def save_summary_txt(self, filename):
+    def save_summary_txt(self):
         if self.summary_data is None:
             print("ERROR: No summary data")
             raise Exception("Missing summary data, try make_summary_txt()")
+        if self.summary_data_filename == "":
+            print("ERROR: Missing summary filename.")
+            raise Exception("summary_filename is empty")
 
-        if not filename.endswith(".txt"):
-            filename += ".txt"
-        filename = os.path.abspath(filename)
+        filename = os.path.abspath(self.summary_data_filename)
         try:
             with open(filename, "w", encoding="utf-8") as file:
                 file.write(self.summary_data)

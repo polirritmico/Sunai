@@ -102,24 +102,6 @@ class TestDay(unittest.TestCase):
         self.assertEqual(expected, output)
 
 
-    ##@unittest.skip
-    #def test_default_output_dir(self):
-    #    expected = "test/output"
-    #    outdir = "test/output"
-
-    #    filename = "test/cases/dummy.xlsx"
-    #    test_plant = Day(filename)
-    #    self.assertEqual(expected, test_plant.output_dir)
-
-    #    filename = "any_folder/dummy.xlsx"
-    #    test_plant = Day(filename)
-    #    self.assertEqual(expected, test_plant.output_dir)
-
-    #    filename = "dummy.xlsx"
-    #    test_plant = Day(filename)
-    #    self.assertEqual(expected, test_plant.output_dir)
-
-
     #@unittest.skip
     def test_make_summary_data(self):
         expected_1 = "3664916"
@@ -141,7 +123,8 @@ class TestDay(unittest.TestCase):
         filename = "test/daily_summary.txt"
         self.day.load_file()
         self.day.make_summary()
-        self.day.save_summary_txt(filename)
+        self.day.summary_data_filename = filename
+        self.day.save_summary_txt()
 
         self.assertTrue(os.path.exists(filename))
         # Clean created file
@@ -158,7 +141,8 @@ class TestDay(unittest.TestCase):
         day = Day(input_datafile)
         day.load_file()
         day.make_graph()
-        day.save_graph(output_filename)
+        day.graph_filename = output_filename
+        day.save_graph()
 
         filename = os.path.abspath(day.graph_filename)
         image = Image.open(filename)

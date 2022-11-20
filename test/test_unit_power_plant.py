@@ -5,6 +5,7 @@ import unittest
 import os
 
 from src.power_plant import PowerPlant
+from src.day import Day
 
 
 #@unittest.skip
@@ -16,6 +17,8 @@ class TestPowerPlant(unittest.TestCase):
         graph_output_dir = "test/output/images"
         self.power_plant = PowerPlant(plant_id, filename, output_dir,
                                       graph_output_dir)
+        day = Day(filename)
+        self.power_plant.days_collection.append(day)
 
 
     #@unittest.skip
@@ -30,6 +33,5 @@ class TestPowerPlant(unittest.TestCase):
 
         # Remove test folders
         os.removedirs(self.power_plant.graph_output_dir)
-        
 
 
