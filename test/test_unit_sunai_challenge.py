@@ -110,5 +110,12 @@ class TestSunaiChallenge(unittest.TestCase):
         self.assertEqual(expected, output)
 
 
+    #@unittest.skip
+    def test_processed_files_count(self):
+        expected = 5
+        self.sunai.get_input_files()
+        output = self.sunai.processed_files_count()
+
+        self.assertEqual(expected, output)
 
 

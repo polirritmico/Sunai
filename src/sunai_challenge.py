@@ -168,6 +168,10 @@ class SunaiChallenge():
             raise err
 
 
+    def processed_files_count(self):
+        return len(self.input_files)
+
+
     def print_summary(self):
         """
         Output consola:
