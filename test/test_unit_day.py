@@ -23,14 +23,17 @@ class TestDay(unittest.TestCase):
 
     #@unittest.skip
     def test_load_xlsx_file_dummy(self):
-        expected = "   id_i   fecha_im  active_energy_im  active_power_im\n" \
-                   "0    42 2022-11-17         123456789        987654321"
+        #expected = "   id_i   fecha_im  active_energy_im  active_power_im\n" \
+        #           "0    42 2022-11-17         123456789        987654321"
+        expected_active_power_im = "fecha_im\n2022-11-17    987654321\nName: active_power_im, dtype: int64"
+        expected_active_energy_im = "   active_energy_im\n0         123456789"
+        expected_date = "2022-11-17"
         self.day.filename = "test/cases/dummy.xlsx"
 
         self.day.load_file()
-        output = str(self.day.data)
-
-        self.assertEqual(expected, output)
+        self.assertEqual(expected_active_power_im, str(self.day.active_power))
+        self.assertEqual(expected_active_energy_im, str(self.day.active_energy))
+        self.assertEqual(expected_date, self.day.date)
 
 
     #@unittest.skip
@@ -67,9 +70,9 @@ class TestDay(unittest.TestCase):
         expected_date_1408 = "2022-11-10"
 
         self.day.load_file()
-        output_date_42 = self.day.get_date(40)
-        output_date_586 = self.day.get_date(584)
-        output_date_1408 = self.day.get_date(1406)
+        output_date_42 = self.day.date
+        output_date_586 = self.day.date
+        output_date_1408 = self.day.date
 
         self.assertEqual(expected_date_42, output_date_42)
         self.assertEqual(expected_date_586, output_date_586)

@@ -30,11 +30,13 @@ class Day():
             raise err
 
         # Parse the data
-        self.data = datafile
+        #self.data = datafile
         self.active_energy = datafile[["active_energy_im"]]
         self.active_power = datafile.groupby("fecha_im")["active_power_im"].sum()
-        self.date = self.get_date(0)
+        date = str(datafile["fecha_im"].values[0])
+        self.date = pd.to_datetime(date).strftime("%Y-%m-%d")
         self.graph_title = "{}_planta_id-{}".format(self.date, self.plant_id)
+        #del datafile
 
 
     def get_plant_id_from_file(self):
@@ -49,12 +51,6 @@ class Day():
 
     def get_active_energy_value(self, index) -> int():
         return self.active_energy.iloc[index, 0]
-
-
-    def get_date(self, index) -> str():
-        date = self.data["fecha_im"].values[index]
-        #date = self.dates.values[index]
-        return pd.to_datetime(str(date)).strftime("%Y-%m-%d")
 
 
     def min_active_energy(self) -> int():
