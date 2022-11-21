@@ -23,7 +23,7 @@ from src.day import Day
 
 class SunaiChallenge():
     def __init__(self):
-        self.input_folder = None
+        self.input_path = None
         self.output_folder = None
         self.graphs_folder = None
 
@@ -36,7 +36,7 @@ class SunaiChallenge():
     def run(self, argv=None):
         # Get all variables
         args = self.parse_args(argv)
-        self.input_folder = args.input_folder[0]
+        self.input_path = args.input_path[0]
         self.output_folder = args.output_folder
         self.graphs_folder = args.graphs_folder[0]
         self.force_mode = args.force_mode
@@ -63,11 +63,12 @@ class SunaiChallenge():
                      "by Eduardo Bray (ejbray@uc.cl)"
         )
         parser.add_argument(
-            "input_folder",
-            metavar = "input_folder",
+            "input_path",
+            metavar = "input_path",
             type = str,
             nargs = 1,
-            help = "The input folder containing all the files to be processed.",
+            help = "The input file or folder containing all the files to be " \
+                   "processed.",
         )
         parser.add_argument(
             "output_folder",
@@ -112,7 +113,7 @@ class SunaiChallenge():
     def get_input_files(self):
         """Recursively get xlsx files in the input folder."""
         files_collection = []
-        for path, _, files in os.walk(self.input_folder):
+        for path, _, files in os.walk(self.input_path):
             for file in files:
                 # Check file extension
                 if os.path.splitext(file)[-1] != ".xlsx":
@@ -136,7 +137,7 @@ class SunaiChallenge():
     def make_power_plants(self, days):
         plants = []
         for plant_id in days.keys():
-            plant = PowerPlant(plant_id, self.input_folder, self.output_folder,
+            plant = PowerPlant(plant_id, self.input_path, self.output_folder,
                                self.graphs_folder)
             plant.days_collection = days[plant_id]
             plants.append(plant)

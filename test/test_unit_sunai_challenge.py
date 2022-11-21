@@ -11,7 +11,7 @@ from src.sunai_challenge import SunaiChallenge
 class TestSunaiChallenge(unittest.TestCase):
     def setUp(self):
         self.sunai = SunaiChallenge()
-        self.sunai.input_folder = "test/cases"
+        self.sunai.input_path = "test/cases"
 
 
     #@unittest.skip
@@ -23,7 +23,7 @@ class TestSunaiChallenge(unittest.TestCase):
         args = ["-F", "-g", expected_graph, expected_input, expected_output]
         parsed_args = self.sunai.parse_args(args)
 
-        self.assertEqual(expected_input, parsed_args.input_folder[0])
+        self.assertEqual(expected_input, parsed_args.input_path[0])
         self.assertEqual(expected_output, parsed_args.output_folder)
         self.assertEqual(expected_graph, parsed_args.graphs_folder[0])
         self.assertEqual(expected_force_mode, parsed_args.force_mode)
@@ -38,7 +38,7 @@ class TestSunaiChallenge(unittest.TestCase):
         args = [expected_input]
         parsed_args = self.sunai.parse_args(args)
 
-        self.assertEqual(expected_input, parsed_args.input_folder[0])
+        self.assertEqual(expected_input, parsed_args.input_path[0])
         self.assertEqual(expected_output, parsed_args.output_folder)
         self.assertEqual(expected_graph, parsed_args.graphs_folder[0])
         self.assertEqual(expected_force, parsed_args.force_mode)
