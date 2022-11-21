@@ -165,7 +165,7 @@ class TestDay(unittest.TestCase):
         self.assertEqual(expected_size, output_size)
 
         # Clean created folders and file
-        #os.remove(os.path.join(output_filename))
+        os.remove(os.path.join(output_filename))
 
 
 

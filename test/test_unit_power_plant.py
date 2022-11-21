@@ -28,7 +28,7 @@ class TestPowerPlant(unittest.TestCase):
         self.power_plant.load_days_data()
 
 
-    #@unittest.skip
+    @unittest.skip
     def test_setup_output_path(self):
         self.assertFalse(os.path.exists(self.power_plant.graph_output_dir))
         self.assertFalse(os.path.exists(self.power_plant.output_dir))
