@@ -44,6 +44,22 @@ class TestSunaiChallenge(unittest.TestCase):
         self.assertEqual(expected_force, parsed_args.force_mode)
 
 
+    @unittest.skip
+    def test_setup_output_path(self):
+        output_dir = ""
+        graph_output_dir = ""
+        self.assertFalse(os.path.exists(graph_output_dir))
+        self.assertFalse(os.path.exists(output_dir))
+
+        self.power_plant.setup_output_path()
+
+        self.assertTrue(os.path.exists(output_dir))
+        self.assertTrue(os.path.exists(graph_output_dir))
+
+        # Remove test folders
+        os.removedirs(graph_output_dir)
+
+
     #@unittest.skip
     def test_read_input_files(self):
         expected = [
