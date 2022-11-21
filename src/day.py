@@ -34,7 +34,7 @@ class Day():
         self.active_energy = datafile[["id_i", "active_energy_im"]]
         self.active_power = datafile.set_index("fecha_im")[["id_i", "active_power_im"]]
         self.date = self.get_date(0)
-        self.graph_title = "{}_planta_{}".format(self.date, self.plant_id)
+        self.graph_title = "{}_planta_id-{}".format(self.date, self.plant_id)
 
 
     def get_plant_id_from_file(self):

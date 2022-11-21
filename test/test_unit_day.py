@@ -18,6 +18,7 @@ class TestDay(unittest.TestCase):
         self.day.graph_filename = "test/output/plantid_date.jpg"
         self.day.graph_title = "test_day_title"
         self.day.summary_data_filename = "test/output/plantid_date_summary.txt"
+        self.day.plant_id = "0218"
 
 
     #@unittest.skip
@@ -131,6 +132,18 @@ class TestDay(unittest.TestCase):
 
 
     #@unittest.skip
+    def test_graph_title(self):
+        expected = "2022-11-17_planta_id-0321"
+        filename = "test/cases/dummy.xlsx"
+        self.day.plant_id = "0321"
+        self.day.filename = filename
+        self.day.load_file()
+        output = self.day.graph_title
+
+        self.assertEqual(expected, output)
+
+
+    #@unittest.skip
     def test_make_graph(self):
         expected_format = "JPEG"
         expected_size = (640, 480)
@@ -138,6 +151,7 @@ class TestDay(unittest.TestCase):
         input_datafile = "test/cases/small_data.xlsx"
         output_filename = "test/output_image_file.jpg"
         day = Day(input_datafile)
+        day.plant_id = "0032"
         day.load_file()
         day.make_graph()
         day.save_graph(output_filename)
@@ -151,7 +165,7 @@ class TestDay(unittest.TestCase):
         self.assertEqual(expected_size, output_size)
 
         # Clean created folders and file
-        os.remove(os.path.join(output_filename))
+        #os.remove(os.path.join(output_filename))
 
 
 
