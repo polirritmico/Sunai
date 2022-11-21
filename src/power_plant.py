@@ -5,13 +5,14 @@
 import os
 import pandas as pd
 import datetime
+from src.day import Day
 #import time
 
 
 class PowerPlant():
     def __init__(self, plant_id: str, input_dir: str, output_dir: str,
                  graph_output_dir: str):
-        self.id = plant_id
+        self.id = plant_id.zfill(4)
         self.input_dir = input_dir
         self.output_dir = output_dir
         self.graph_output_dir = graph_output_dir
@@ -41,9 +42,16 @@ class PowerPlant():
             day.load_file()
 
 
-    def setup_days_outputs_filenames(self):
-        for day in self.days_collection:
-            pass
+    def make_day_graph_filename(self, day):
+        filename = "{}_{}.jpg".format(self.id, day.date)
+        filename = os.path.join(self.graph_output_dir, filename)
+        return filename
+
+
+    def make_day_summary_filename(self, day):
+        filename = "{}_{}_summary.txt".format(self.id, day.date)
+        filename = os.path.join(self.output_dir, filename)
+        return filename
 
 
 

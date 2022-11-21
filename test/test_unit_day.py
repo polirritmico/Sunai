@@ -10,7 +10,7 @@ from PIL.ExifTags import TAGS
 from src.day import Day
 
 
-@unittest.skip
+#@unittest.skip
 class TestDay(unittest.TestCase):
     def setUp(self):
         filename = "test/cases/data_plantas_python_1_1.xlsx"
@@ -61,9 +61,9 @@ class TestDay(unittest.TestCase):
 
     #@unittest.skip
     def test_load_xlsx_file_date_data(self):
-        expected_date_42 = "2022-11-10 00:40:00"
-        expected_date_586 = "2022-11-10 09:15:00"
-        expected_date_1408 = "2022-11-10 23:00:00"
+        expected_date_42 = "2022-11-10"
+        expected_date_586 = "2022-11-10"
+        expected_date_1408 = "2022-11-10"
 
         self.day.load_file()
         output_date_42 = self.day.get_date(40)

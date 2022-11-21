@@ -28,11 +28,11 @@ Demo
 │   └── ...
 ├── output
 │   ├── images
-│   │   ├── 0186_21-12-2022.jpg
-│   │   ├── 0186_22-12-2022.jpg
+│   │   ├── 0186_2022-12-21.jpg
+│   │   ├── 0186_2022-12-22.jpg
 │   │   └── ...
-│   ├── 0186_21-12-2022_summary.txt
-│   ├── 0186_22-12-2022_summary.txt
+│   ├── 0186_2022-12-21_summary.txt
+│   ├── 0186_2022-12-22_summary.txt
 │   └── ...
 └── sunai_challenge.py
 ```
@@ -81,7 +81,7 @@ En términos generales las clases PowerPlant y Day son wrappers de clases Pandas
 Por cada archivo/input:
 
 1. Generar un gráfico (es 1 para cada archivo, o sea 1 gráfico por día/archivo):
-  - **Título:** DD/MM/YYYY\_planta\_idPlanta
+  - **Título:** YYYY/MM/DD\_planta\_idPlanta
   - **X:** Date. Ya que es diario no poner la fecha en x_label sino hh:mm
   - **Y:** Active power
 2. Generar **txt**: 

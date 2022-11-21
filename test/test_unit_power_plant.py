@@ -15,8 +15,8 @@ class TestPowerPlant(unittest.TestCase):
         filename_2 = "test/cases/subfolder/dummy.xlsx"
         input_dir = "test/cases"
         output_dir = "test/output"
-        plant_id = "321"
         graph_output_dir = "test/output/images"
+        plant_id = "321"
         self.power_plant = PowerPlant(plant_id, input_dir, output_dir,
                                       graph_output_dir)
         self.day1 = Day(filename_1)
@@ -25,6 +25,7 @@ class TestPowerPlant(unittest.TestCase):
         self.day2.get_plant_id_from_file()
         self.power_plant.days_collection.append(self.day1)
         self.power_plant.days_collection.append(self.day2)
+        self.power_plant.load_days_data()
 
 
     #@unittest.skip
@@ -58,15 +59,18 @@ class TestPowerPlant(unittest.TestCase):
 
 
     #@unittest.skip
-    def test_set_day_output_filenames(self):
-        expected_summary_file = "test/cases/output/0321_2022-11-17_summary.txt"
-        expected_graph_file = "test/cases/output/images/0031-21-11-17.jpg"
+    def test_make_day_graph_filename(self):
+        expected = "test/output/images/0321_2022-11-18.jpg"
+        output = self.power_plant.make_day_graph_filename(self.day2)
 
-        self.power_plant.setup_days_outputs_filenames()
-        output_graph = self.power_plant.days_collection[1].graph_filename
-        output_summary = self.power_plant.days_collection[1].summary_data_filename
+        self.assertEqual(expected, output)
 
-        self.assertEqual(expected_summary_file, output_summary)
-        self.assertEqual(expected_graph_file, output_graph)
+
+    #@unittest.skip
+    def test_make_day_graph_title(self):
+        expected = "test/output/0321_2022-11-17_summary.txt"
+        output = self.power_plant.make_day_summary_filename(self.day1)
+
+        self.assertEqual(expected, output)
 
 

@@ -10,16 +10,15 @@ class Day():
         self.filename = filename
         self.data = None
 
+        self.plant_id = ""
         self.active_energy = None
         self.active_power = None
         #self.dates = None
-        self.plant_id = ""
 
+        self.date = ""
         self.graph = None
         self.graph_title = ""
-        self.graph_filename = ""
         self.summary_data = None
-        self.summary_data_filename = ""
 
 
     def load_file(self):
@@ -34,6 +33,8 @@ class Day():
         self.data = datafile
         self.active_energy = datafile[["id_i", "active_energy_im"]]
         self.active_power = datafile.set_index("fecha_im")[["id_i", "active_power_im"]]
+        self.date = self.get_date(0)
+        self.graph_title = "{}_planta_{}".format(self.date, self.plant_id)
 
 
     def get_plant_id_from_file(self):
@@ -53,7 +54,7 @@ class Day():
     def get_date(self, index) -> str():
         date = self.data["fecha_im"].values[index]
         #date = self.dates.values[index]
-        return pd.to_datetime(str(date)).strftime("%Y-%m-%d %H:%M:%S")
+        return pd.to_datetime(str(date)).strftime("%Y-%m-%d")
 
 
     def min_active_energy(self) -> int():

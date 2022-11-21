@@ -80,7 +80,7 @@ class TestSunaiChallenge(unittest.TestCase):
 
     #@unittest.skip
     def test_make_power_plants(self):
-        expected = ["218", "31", "32", "321" ]
+        expected = ["0031", "0032", "0218", "0321" ]
         self.sunai.get_input_files()
         days_collection = self.sunai.make_days_by_plant()
         self.sunai.make_power_plants(days_collection)
