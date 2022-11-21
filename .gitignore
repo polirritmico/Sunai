@@ -135,3 +135,5 @@ dmypy.json
 *.jpg
 *.png
 
+# Dummy performance test inputs
+test/performance_*
