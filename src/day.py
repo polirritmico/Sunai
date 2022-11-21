@@ -24,15 +24,15 @@ class Day():
     def load_file(self):
         try:
             datafile = pd.read_excel(self.filename, parse_dates=True,
-                                     usecols="A,B,L,M").fillna(0)
+                                     na_values="data_faltante", usecols="A,B,L,M")
         except Exception as err:
             print("ERROR: Can't read the file: ")
             raise err
 
         # Parse the data
         self.data = datafile
-        self.active_energy = datafile[["id_i", "active_energy_im"]]
-        self.active_power = datafile.set_index("fecha_im")[["id_i", "active_power_im"]]
+        self.active_energy = datafile[["active_energy_im"]]
+        self.active_power = datafile.groupby("fecha_im")["active_power_im"].sum()
         self.date = self.get_date(0)
         self.graph_title = "{}_planta_id-{}".format(self.date, self.plant_id)
 
@@ -48,7 +48,7 @@ class Day():
 
 
     def get_active_energy_value(self, index) -> int():
-        return self.active_energy.values[index][1]
+        return self.active_energy.iloc[index, 0]
 
 
     def get_date(self, index) -> str():
@@ -58,33 +58,39 @@ class Day():
 
 
     def min_active_energy(self) -> int():
-        return self.active_energy.min()[1]
+        return self.active_energy.min()[0]
 
 
     def max_active_energy(self) -> int():
-        return self.active_energy.max()[1]
+        return self.active_energy.max()[0]
 
 
     def active_power_sum_by_day(self):
-        return int(self.active_power["active_power_im"].sum())
+        return int(self.active_power.sum())
 
 
     def make_graph(self):
         """
         Generar gráfico line chart:
-            - Eje x fecha
-            - Eje y active power
+            - Eje X fecha
+            - Eje Y active power
             - Guardar archivo
+
+        Series self.active_power:
+            fecha_im
+            2022-11-10 00:00:00    0.0
+            2022-11-10 00:05:00    0.0
+            ...
+            Name: active_power_im, Length: 260, dtype: float64
         """
         self.graph = self.active_power.plot(
                 kind = "line",
                 title = self.graph_title,
                 grid = True,
-                #ylabel = "Active power",
+                ylabel = "Active power",
                 xlabel = "Timestamp",
-                #x_compat = True,
-                #color = "tab:orange",
-                #legend = False,
+                color = "tab:orange",
+                legend = False,
         )
 
 

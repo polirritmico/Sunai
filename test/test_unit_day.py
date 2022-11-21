@@ -39,7 +39,7 @@ class TestDay(unittest.TestCase):
         self.day.filename = "test/cases/dummy.xlsx"
         output = self.day.get_plant_id_from_file()
 
-        self.assertEquals(expected, output)
+        self.assertEqual(expected, output)
 
 
 

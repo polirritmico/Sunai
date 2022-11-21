@@ -89,7 +89,6 @@ class TestSunaiChallenge(unittest.TestCase):
         self.assertEqual(expected, output)
 
         expected = 1
-        print(plant)
         output = len(plant["218"])
         self.assertEqual(expected, output)
 
