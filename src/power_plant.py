@@ -5,6 +5,7 @@
 import os
 import pandas as pd
 import datetime
+import matplotlib.pyplot as plt
 from src.day import Day
 #import time
 
@@ -20,26 +21,26 @@ class PowerPlant():
         self.days_collection = []
 
 
-    def setup_output_path(self):
-        if self.output_dir == "":
-            raise Exception("ERROR: No output directory assigned")
-            return
-        if self.graph_output_dir == "":
-            raise Exception("ERROR: No graphs output directory assigned")
-            return
-        try:
-            if not os.path.exists(self.output_dir):
-                os.makedirs(self.output_dir)
-            if not os.path.exists(self.graph_output_dir):
-                os.makedirs(self.graph_output_dir)
-        except Exception as err:
-            print("ERROR: Can't read/write output folder")
-            raise err
-
-
     def load_days_data(self):
         for day in self.days_collection:
             day.load_file()
+
+
+    def make_all_summaries(self):
+        for day in self.days_collection:
+            day_graph_filename = self.make_day_graph_filename(day)
+            day.make_summary(day_graph_filename)
+            day_summary_filename = self.make_day_summary_filename(day)
+            day.save_summary_txt(day_summary_filename)
+
+
+    def make_all_graphs(self):
+        for day in self.days_collection:
+            day_graph_filename = self.make_day_graph_filename(day)
+            day.make_graph()
+            day.save_graph(day_graph_filename)
+            #plt.clf()
+            plt.close("all")
 
 
     def make_day_graph_filename(self, day):
@@ -52,14 +53,5 @@ class PowerPlant():
         filename = "{}_{}_summary.txt".format(self.id, day.date)
         filename = os.path.join(self.output_dir, filename)
         return filename
-
-
-
-    def console_output(self):
-        """
-        Output consola:
-            - Suma total del active power por día de todas las plantas
-        """
-        pass
 
 
