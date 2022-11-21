@@ -19,7 +19,7 @@ logging.basicConfig(
 if __name__ == "__main__":
     print("Simple Performance Test\n=======================")
     sunai = SunaiChallenge()
-    print("Starting test...", end="", flush=True)
+    print("Running test...", end="", flush=True)
     start = time.time()
     sunai.run([INPUT_TEST_FOLDER, OUTPUT_TEST_FOLDER])
     end = time.time()
@@ -31,6 +31,11 @@ if __name__ == "__main__":
     processed_files = sunai.processed_files_count()
     print("Processed input files: {}".format(processed_files))
     print("Runtime: {:0>2}:{:05.2f}".format(int(min), sec))
+
+    logging.info("Runtime: {:0>2}:{:05.2f}\tProcessed files: {}"
+                 .format(int(min), sec, processed_files))
+
+    # Estimate 1000 repetitions:
     t = t * (1000 / processed_files)
     h, rem = divmod(t, 3600)
     min, sec = divmod(rem, 60)
@@ -38,7 +43,4 @@ if __name__ == "__main__":
           .format(int(h), int(min), int(sec)))
     output_path = os.path.abspath(OUTPUT_TEST_FOLDER)
     print("Output folder:\n{}".format(output_path))
-
-    logging.info("Runtime: {:0>2}:{:0>2}:{:0>2}"
-                 .format(int(h), int(min), int(sec)))
 
