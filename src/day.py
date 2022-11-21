@@ -109,11 +109,11 @@ class Day():
         max_active_energy = self.max_active_energy()
         data = [
             "Daily Summary\n=============\n"
-            "Input file:\n'{}'\n".format(self.filename),
+            "Input file:\n{}\n".format(self.filename),
             "Active power per day sum: {:9}".format(active_power_per_day),
             "Minimum active energy: {:12}".format(min_active_energy),
             "Maximum active energy: {:12}".format(max_active_energy),
-            "\nGenerated graph full filename:\n'{}'".format(graph_filename),
+            "\nGenerated graph full filename:\n{}".format(graph_filename),
             "" # trailing newline
         ]
         self.summary_data = "\n".join(data)
