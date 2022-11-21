@@ -33,17 +33,25 @@ class SunaiChallenge():
         self.force_mode = False
 
 
-    def run(self):
+    def run(self, argv=None):
         # Get all variables
-        args = self.parse_args()
+        args = self.parse_args(argv)
         self.input_folder = args.input_folder[0]
-        self.output_folder = args.output_folder[0]
+        self.output_folder = args.output_folder
         self.graphs_folder = args.graphs_folder[0]
         self.force_mode = args.force_mode
 
         self.get_input_files()
+        self.setup_output_paths()
         days_collection = self.make_days_by_plant()
-        self.make_power_plants(days_collection)
+        plants_colection = self.make_power_plants(days_collection)
+
+        for plant in plants_colection:
+            plant.load_days_data()
+            plant.make_all_summaries()
+            plant.make_all_graphs()
+            del plant
+
 
 
     def parse_args(self, argv=None):
@@ -143,7 +151,27 @@ class SunaiChallenge():
         return plants_id
 
 
-    def print_summary(self):
-        pass
+    def setup_output_paths(self):
+        if self.output_folder == "":
+            raise Exception("ERROR: No output directory assigned")
+            return
+        if self.graphs_folder == "":
+            raise Exception("ERROR: No graphs output directory assigned")
+            return
+        try:
+            if not os.path.exists(self.output_folder):
+                os.makedirs(self.output_folder)
+            if not os.path.exists(self.graphs_folder):
+                os.makedirs(self.graphs_folder)
+        except Exception as err:
+            print("ERROR: Can't read/write output folder")
+            raise err
 
+
+    def print_summary(self):
+        """
+        Output consola:
+            - Suma total del active power por día de todas las plantas
+        """
+        pass
 
