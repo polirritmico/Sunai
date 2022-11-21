@@ -111,14 +111,24 @@ class SunaiChallenge():
 
 
     def get_input_files(self):
-        """Recursively get xlsx files in the input folder."""
+        """Open single file or recursively get xlsx files in the input folder."""
+        if self.input_path.endswith(".xlsx"):
+            self.input_files = [self.input_path]
+            return self.input_files
+        if not os.path.isdir(self.input_path):
+            print("ERROR: Not a valid input file.")
+            raise Exception("Not xlsx input file and not a directory")
+
         files_collection = []
         for path, _, files in os.walk(self.input_path):
             for file in files:
                 # Check file extension
                 if os.path.splitext(file)[-1] != ".xlsx":
                     continue
-                files_collection.append((os.path.join(path, file)))
+                files_collection.append(os.path.join(path, file))
+        if len(files_collection) == 0:
+            print("ERROR: No input files detected in <input_path>")
+            raise Exception("No input files detected")
         self.input_files = files_collection
         return self.input_files
 
