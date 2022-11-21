@@ -3,11 +3,18 @@
 
 import time
 import os
+import logging
 
 from src.sunai_challenge import SunaiChallenge
 
 INPUT_TEST_FOLDER = "test/performance_full"
 OUTPUT_TEST_FOLDER = "test/performance_output"
+
+logging.basicConfig(
+        filename="performance.log",
+        level=logging.INFO,
+        format="Execution date: %(asctime)s\t%(message)s"
+)
 
 if __name__ == "__main__":
     print("Simple Performance Test\n=======================")
@@ -31,4 +38,7 @@ if __name__ == "__main__":
           .format(int(h), int(min), int(sec)))
     output_path = os.path.abspath(OUTPUT_TEST_FOLDER)
     print("Output folder:\n{}".format(output_path))
+
+    logging.info("Runtime: {:0>2}:{:0>2}:{:0>2}"
+                 .format(int(h), int(min), int(sec)))
 
