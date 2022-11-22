@@ -41,7 +41,7 @@ class SunaiChallenge():
         self.graphs_folder = args.graphs_folder[0]
         self.force_mode = args.force_mode
 
-        self.get_input_files()
+        self.input_files = self.get_input_files()
         self.setup_output_paths()
         days_collection = self.make_days_by_plant()
         plants_colection = self.make_power_plants(days_collection)
@@ -51,7 +51,6 @@ class SunaiChallenge():
             plant.make_all_summaries()
             plant.make_all_graphs()
             del plant
-
 
 
     def parse_args(self, argv=None):
@@ -129,8 +128,8 @@ class SunaiChallenge():
         if len(files_collection) == 0:
             print("ERROR: No input files detected in <input_path>")
             raise Exception("No input files detected")
-        self.input_files = files_collection
-        return self.input_files
+
+        return files_collection
 
 
     def make_days_by_plant(self):
@@ -163,6 +162,7 @@ class SunaiChallenge():
 
 
     def setup_output_paths(self):
+        """Make the output directories if they don't exists"""
         if self.output_folder == "":
             raise Exception("ERROR: No output directory assigned")
             return
