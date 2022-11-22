@@ -3,6 +3,8 @@
 
 import pandas as pd
 import datetime
+import matplotlib.pyplot as plt
+import matplotlib.ticker as ticker
 
 
 class Day():
@@ -30,13 +32,13 @@ class Day():
             raise err
 
         # Parse the data
-        #self.data = datafile
         self.active_energy = datafile[["active_energy_im"]]
         self.active_power = datafile.groupby("fecha_im")["active_power_im"].sum()
+
         date = str(datafile["fecha_im"].values[0])
         self.date = pd.to_datetime(date).strftime("%Y-%m-%d")
         self.graph_title = "{}_planta_id-{}".format(self.date, self.plant_id)
-        #del datafile
+        del datafile
 
 
     def get_plant_id_from_file(self):
@@ -79,15 +81,24 @@ class Day():
             ...
             Name: active_power_im, Length: 260, dtype: float64
         """
+        #self.active_power = self.active_power.resample("30min").max()
+        self.active_power.index = self.active_power.index.strftime("%H:%M")
+
+        ax2 = plt.axes()
+        ax2.xaxis.set_major_locator(ticker.MultipleLocator(35))
+
         self.graph = self.active_power.plot(
                 kind = "line",
                 title = self.graph_title,
                 grid = True,
                 ylabel = "Active power",
-                xlabel = "Timestamp",
+                xlabel = "",
+                x_compat = True,
                 color = "tab:orange",
                 legend = False,
+                ax = ax2,
         )
+
 
 
     def save_graph(self, filename):
