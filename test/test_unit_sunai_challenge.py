@@ -92,25 +92,29 @@ class TestSunaiChallenge(unittest.TestCase):
         self.sunai.run(args)
 
 
-    @unittest.skip
+    #@unittest.skip
     def test_make_full_summary(self):
         expected = """Full active_power_im sum by day
 ===============================
 plant_id       active_power_im
-0032                    0
-0218              3664916
-0321           1975308642
-0031              2520597
+  0032                    0
+  0218              3664916
+  0321           1975308642
+  0031              2520597
 -------------------------------
 total:           1981494155\n"""
 
         input_dir = "test/cases"
         output_dir = "test/output/sunai_run"
         graph = "test/output/sunai_run/images"
-        args = ["-p", input_dir, output_dir]
+        args = [input_dir, output_dir]
 
-        output = self.sunai.run(args)
+        self.sunai.run(args)
+        output = self.sunai.print_full_summary()
 
         self.assertEqual(expected, output)
+
+        # Clean created folders or file
+        #os.remove(os.path.join(graph))
 
 
