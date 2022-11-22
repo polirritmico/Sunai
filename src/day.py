@@ -81,7 +81,6 @@ class Day():
         """
         #self.active_power = self.active_power.resample("30min").max()
         self.active_power.index = self.active_power.index.strftime("%H:%M")
-
         self.graph = self.active_power.plot(
                 kind = "line",
                 title = self.graph_title,

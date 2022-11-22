@@ -39,7 +39,7 @@ class PowerPlant():
             day_graph_filename = self.make_day_graph_filename(day)
             day.make_graph()
             day.save_graph(day_graph_filename)
-            #plt.clf()
+            plt.clf()
             plt.close("all")
 
 

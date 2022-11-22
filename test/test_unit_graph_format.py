@@ -5,6 +5,7 @@ import unittest
 import os
 
 from src.day import Day
+import matplotlib.pyplot as plt
 
 
 #@unittest.skip
@@ -14,6 +15,8 @@ class TestDayGraphFormat(unittest.TestCase):
         self.day = Day(filename)
         self.day.graph_filename = "test/output_day_graph_format.jpg"
         self.day.plant_id = "0221"
+        plt.clf()
+        plt.close("all")
 
 
     def test_make_graph(self):

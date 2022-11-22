@@ -153,11 +153,11 @@ class TestDay(unittest.TestCase):
 
         input_datafile = "test/cases/small_data.xlsx"
         output_filename = "test/output_image_file.jpg"
-        day = Day(input_datafile)
-        day.plant_id = "0032"
-        day.load_file()
-        day.make_graph()
-        day.save_graph(output_filename)
+        self.day = Day(input_datafile)
+        self.day.plant_id = "0032"
+        self.day.load_file()
+        self.day.make_graph()
+        self.day.save_graph(output_filename)
 
         filename = os.path.abspath(output_filename)
         image = Image.open(filename)
