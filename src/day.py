@@ -3,8 +3,6 @@
 
 import pandas as pd
 import datetime
-import matplotlib.pyplot as plt
-import matplotlib.ticker as ticker
 
 
 class Day():
@@ -84,19 +82,14 @@ class Day():
         #self.active_power = self.active_power.resample("30min").max()
         self.active_power.index = self.active_power.index.strftime("%H:%M")
 
-        ax2 = plt.axes()
-        ax2.xaxis.set_major_locator(ticker.MultipleLocator(35))
-
         self.graph = self.active_power.plot(
                 kind = "line",
                 title = self.graph_title,
                 grid = True,
                 ylabel = "Active power",
                 xlabel = "",
-                x_compat = True,
                 color = "tab:orange",
                 legend = False,
-                ax = ax2,
         )
 
 
