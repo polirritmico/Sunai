@@ -16,6 +16,7 @@ __status__ = "Prototype"
 import os
 import argparse
 import logging
+import matplotlib.pyplot as plt
 
 from src.power_plant_day import PowerPlantDay
 
@@ -59,6 +60,8 @@ class SunaiChallenge():
 
             day.save_summary_txt()
             day.save_graph_image()
+            plt.clf()
+            plt.close("all")
 
             # Get the data to make the summary
             active_power = day.active_power_day_sum()
