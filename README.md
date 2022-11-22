@@ -9,6 +9,9 @@ Proyecto de postulación
 ```command
 $ python sunai_challenge.py <source data folder> <output folder>
 ```
+> En el repositorio (pre-deploy) se debería sustituir `sunai_challenge.py`
+> por `__main__.py`
+
 Por ejemplo, teniendo una carpeta `data` con archivos _xlsx_ y usando `output`
 como carpeta de destino:
 
