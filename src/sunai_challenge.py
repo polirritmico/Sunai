@@ -3,22 +3,25 @@
 
 """
     SunaiChallenge
-    A pandas wrapper to read xlsx and generate summary data
-    and linear plots.
+    A pandas wrapper to read xlsx and generate summary data and linear plots.
 """
 
 __author__ = "Eduardo Bray"
 __version__ = "0.1"
 __email__ = "ejbray@uc.cl"
-__date__ = "2022-11-21"
+__date__ = "2022-11-22"
 __status__ = "Prototype"
 
 
 import os
 import argparse
+import logging
+import concurrent.futures
 
-from src.power_plant import PowerPlant
-from src.day import Day
+from src.power_plant_day import PowerPlantDay
+
+
+log = logging.getLogger(__name__)
 
 
 class SunaiChallenge():
@@ -26,11 +29,11 @@ class SunaiChallenge():
         self.input_path = None
         self.output_folder = None
         self.graphs_folder = None
+        self.parallel_mode = False
 
         self.input_files = []
-        self.power_plants = []
-
-        self.force_mode = False
+        self.days_collection = []
+        self.power_plants = {}
 
 
     def run(self, argv=None):
@@ -39,18 +42,46 @@ class SunaiChallenge():
         self.input_path = args.input_path[0]
         self.output_folder = args.output_folder
         self.graphs_folder = args.graphs_folder[0]
-        self.force_mode = args.force_mode
+        self.parallel_mode = args.parallel_mode
 
+        # Get input files and setup output folders and days objects
         self.input_files = self.get_input_files()
         self.setup_output_paths()
-        days_collection = self.make_days_by_plant()
-        plants_colection = self.make_power_plants(days_collection)
+        for file in self.input_files:
+            day = PowerPlantDay(file)
+            self.days_collection.append(day)
 
-        for plant in plants_colection:
-            plant.load_days_data()
-            plant.make_all_summaries()
-            plant.make_all_graphs()
-            del plant
+        # Read the datafiles, process the data and write files
+        for day in self.days_collection:
+            day.load_file()
+            day.set_output_filenames_fullpath(self.output_folder,
+                                              self.graphs_folder)
+            day.make_summary()
+            day.make_graph()
+
+            day.save_summary_txt()
+            day.save_graph_image()
+
+
+
+    #def parallel_process_mode(self):
+    #    with concurrent.futures.ThreadPoolExecutor() as executor:
+    #        processed_days = executor.map(self.load_day_data,
+    #                                      self.days_collection)
+    #    for day in processed_days:
+    #        plant_id = day.plant_id
+    #        if plant_id not int self.power_plants:
+    #            pass
+
+
+    def load_day_data(self, day):
+        day.load_file()
+        #day.set_output_filenames_fullpath(self.output_folder, self.graph_dir)
+        return day
+
+
+    def single_process_mode(self):
+        pass
 
 
     def parse_args(self, argv=None):
@@ -91,12 +122,11 @@ class SunaiChallenge():
                    "(Default: <output_folder>/images)",
         )
         parser.add_argument(
-            "-F", "--FORCE",
-            dest = "force_mode",
+            "-p", "--parallel",
+            dest = "parallel_mode",
             action = argparse.BooleanOptionalAction,
             default = False,
-            help = "Remove previous files and folders in <output_folder>. " \
-                   "Use with caution.",
+            help = "Use multiprocess and multithreads Python capabilities."
         )
         parser.add_argument(
             "-v", "--version",
@@ -111,13 +141,15 @@ class SunaiChallenge():
 
     def get_input_files(self):
         """Open single file or recursively get xlsx files in the input folder."""
+        # Check pased input path
         if self.input_path.endswith(".xlsx"):
             self.input_files = [self.input_path]
             return self.input_files
         if not os.path.isdir(self.input_path):
-            print("ERROR: Not a valid input file.")
-            raise Exception("Not xlsx input file and not a directory")
+            log.critical("Not valid input path: {}".format(self.input_path))
+            raise Exception("Input it's not a xlsx file nor a directory")
 
+        # Get the xlsx files
         files_collection = []
         for path, _, files in os.walk(self.input_path):
             for file in files:
@@ -126,67 +158,40 @@ class SunaiChallenge():
                     continue
                 files_collection.append(os.path.join(path, file))
         if len(files_collection) == 0:
-            print("ERROR: No input files detected in <input_path>")
-            raise Exception("No input files detected")
+            log.critical("Not found xlsx files in input path: {}"
+                         .format(self.input_path))
+            raise Exception("No input files detected in <input_path>")
 
         return files_collection
-
-
-    def make_days_by_plant(self):
-        days_collection = {}
-        for file in self.input_files:
-            day = Day(file)
-            plant_id = day.get_plant_id_from_file()
-            if plant_id not in days_collection:
-                days_collection[plant_id] = []
-            days_collection[plant_id].append(day)
-        return days_collection
-
-
-    def make_power_plants(self, days):
-        plants = []
-        for plant_id in days.keys():
-            plant = PowerPlant(plant_id, self.input_path, self.output_folder,
-                               self.graphs_folder)
-            plant.days_collection = days[plant_id]
-            plants.append(plant)
-        self.power_plants = plants
-        return plants
-
-
-    def get_power_plants_id(self):
-        plants_id = []
-        for plant in self.power_plants:
-             plants_id.append(plant.id)
-        return plants_id
-
-
-    def setup_output_paths(self):
-        """Make the output directories if they don't exists"""
-        if self.output_folder == "":
-            raise Exception("ERROR: No output directory assigned")
-            return
-        if self.graphs_folder == "":
-            raise Exception("ERROR: No graphs output directory assigned")
-            return
-        try:
-            if not os.path.exists(self.output_folder):
-                os.makedirs(self.output_folder)
-            if not os.path.exists(self.graphs_folder):
-                os.makedirs(self.graphs_folder)
-        except Exception as err:
-            print("ERROR: Can't read/write output folder")
-            raise err
 
 
     def processed_files_count(self):
         return len(self.input_files)
 
 
-    def print_summary(self):
-        """
-        Output consola:
-            - Suma total del active power por día de todas las plantas
-        """
-        pass
+    def setup_output_paths(self):
+        """Creates the output directories if they don't exists"""
+        # Validates inputs
+        if self.output_folder == "":
+            log.critical("Missing output path")
+            raise Exception("No output directory assigned")
+        if self.graphs_folder == "":
+            log.critical("Missing graph output path")
+            raise Exception("No output directory assigned")
+
+        try:
+            if not os.path.exists(self.output_folder):
+                os.makedirs(self.output_folder)
+            if not os.path.exists(self.graphs_folder):
+                os.makedirs(self.graphs_folder)
+        except Exception as err:
+            log.critical("Couldn't read/write output folder")
+            raise err
+
+
+
+    #def print_full_summary(self):
+    #    """Show total sum of active power by day of all plants"""
+    #    pass
+
 

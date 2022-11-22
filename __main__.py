@@ -4,9 +4,8 @@
 
 import sys
 import traceback
-#import time
 
-from src.sunai_challenge import SunaiChallenge
+#from src.sunai_challenge import SunaiChallenge
 
 
 def main():

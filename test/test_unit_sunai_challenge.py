@@ -19,14 +19,14 @@ class TestSunaiChallenge(unittest.TestCase):
         expected_input = "input_test_folder"
         expected_output = "output_TEST"
         expected_graph = "alternative_folder"
-        expected_force_mode = True
-        args = ["-F", "-g", expected_graph, expected_input, expected_output]
+        expected_parallel_mode = True
+        args = ["-p", "-g", expected_graph, expected_input, expected_output]
         parsed_args = self.sunai.parse_args(args)
 
         self.assertEqual(expected_input, parsed_args.input_path[0])
         self.assertEqual(expected_output, parsed_args.output_folder)
         self.assertEqual(expected_graph, parsed_args.graphs_folder[0])
-        self.assertEqual(expected_force_mode, parsed_args.force_mode)
+        self.assertEqual(expected_parallel_mode, parsed_args.parallel_mode)
 
 
     #@unittest.skip
@@ -35,29 +35,14 @@ class TestSunaiChallenge(unittest.TestCase):
         expected_output = "output"
         expected_graph = "output/images"
         expected_force = False
+        expected_parallel = False
         args = [expected_input]
         parsed_args = self.sunai.parse_args(args)
 
         self.assertEqual(expected_input, parsed_args.input_path[0])
         self.assertEqual(expected_output, parsed_args.output_folder)
         self.assertEqual(expected_graph, parsed_args.graphs_folder[0])
-        self.assertEqual(expected_force, parsed_args.force_mode)
-
-
-    @unittest.skip
-    def test_setup_output_path(self):
-        output_dir = ""
-        graph_output_dir = ""
-        self.assertFalse(os.path.exists(graph_output_dir))
-        self.assertFalse(os.path.exists(output_dir))
-
-        self.power_plant.setup_output_path()
-
-        self.assertTrue(os.path.exists(output_dir))
-        self.assertTrue(os.path.exists(graph_output_dir))
-
-        # Remove test folders
-        os.removedirs(graph_output_dir)
+        self.assertEqual(expected_force, parsed_args.parallel_mode)
 
 
     #@unittest.skip
@@ -77,43 +62,60 @@ class TestSunaiChallenge(unittest.TestCase):
 
 
     #@unittest.skip
-    def test_make_days_by_plant(self):
-        expected = 4
-        self.sunai.get_input_files()
-        plant = self.sunai.make_days_by_plant()
-        output = len(plant)
-        self.assertEqual(expected, output)
-
-        expected = 2
-        output = len(plant["321"])
-        self.assertEqual(expected, output)
-
-        expected = 1
-        output = len(plant["218"])
-        self.assertEqual(expected, output)
-
-
-    #@unittest.skip
-    def test_make_power_plants(self):
-        expected = ["0031", "0032", "0218", "0321" ]
-        self.sunai.get_input_files()
-        days_collection = self.sunai.make_days_by_plant()
-        self.sunai.make_power_plants(days_collection)
-        output = self.sunai.get_power_plants_id()
-        output.sort()
-
-        self.assertEqual(expected, output)
-
-        expected = "321"
-        output = self.sunai.power_plants[2].days_collection[1].plant_id
-        self.assertEqual(expected, output)
-
-
-    #@unittest.skip
     def test_processed_files_count(self):
         expected = 5
+        output = len(self.sunai.get_input_files())
+
+        self.assertEqual(expected, output)
+
+
+    #@unittest.skip
+    def test_setup_output_paths(self):
+        output_dir = "test/output_sunai"
+        graph_output_dir = "test/output_sunai/graphs_folder"
+        self.assertFalse(os.path.exists(graph_output_dir))
+        self.assertFalse(os.path.exists(output_dir))
+
+        self.sunai.output_folder = output_dir
+        self.sunai.graphs_folder = graph_output_dir
+        self.sunai.setup_output_paths()
+
+        self.assertTrue(os.path.exists(output_dir))
+        self.assertTrue(os.path.exists(graph_output_dir))
+
+        # Remove test folders
+        os.removedirs(graph_output_dir)
+
+
+    @unittest.skip
+    def test_run(self):
+        expected_input = "test/cases"
+        expected_output = "test/output/sunai_run"
+        expected_graph = "test/output/sunai_run/images"
+        expected_parallel_mode = True
+        args = ["-p", expected_input, expected_output]
+        self.sunai.run(args)
+
+
+    @unittest.skip
+    def test_make_full_summary(self):
+        expected = """Full Summary
+============
+Daily Active Power by Power Plant:
+plant_id    active_power_im
+0000            123456
+0000            123123
+0000            123123
+0000            123123
+0000            123123
+0000            123123
+----------------------
+total:       123123123"""
+
         self.sunai.get_input_files()
-        output = self.sunai.processed_files_count()
+        self.sunai.process_all_days()
+        #self.sunai.sort_days_by_plant()
+        output = self.sunai.make_full_summary()
 
         self.assertEqual(expected, output)
 
