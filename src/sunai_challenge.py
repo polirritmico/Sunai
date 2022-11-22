@@ -28,7 +28,6 @@ class SunaiChallenge():
         self.input_path = None
         self.output_folder = None
         self.graphs_folder = None
-        self.parallel_mode = False
 
         self.input_files = []
         self.days_collection = []
@@ -42,7 +41,6 @@ class SunaiChallenge():
         self.input_path = args.input_path[0]
         self.output_folder = args.output_folder
         self.graphs_folder = args.graphs_folder[0]
-        self.parallel_mode = args.parallel_mode
 
         # Get input files and setup output folders and days objects
         self.input_files = self.get_input_files()
@@ -108,13 +106,6 @@ class SunaiChallenge():
             required = False,
             help = "Set the output folder for the generated graph images. " \
                    "(Default: <output_folder>/images)",
-        )
-        parser.add_argument(
-            "-p", "--parallel",
-            dest = "parallel_mode",
-            action = argparse.BooleanOptionalAction,
-            default = False,
-            help = "Use multiprocess and multithreads Python capabilities."
         )
         parser.add_argument(
             "-v", "--version",
@@ -200,6 +191,5 @@ class SunaiChallenge():
         summary_string = "\n".join(summary)
 
         return summary_string
-
 
 
