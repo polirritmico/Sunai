@@ -137,3 +137,4 @@ dmypy.json
 
 # Dummy performance test inputs
 test/performance_*
+test/output
