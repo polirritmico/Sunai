@@ -4,9 +4,7 @@ Proyecto de postulación
 
 ## Uso
 
-### Script
-
-Ejecución:
+### Ejecución
 
 ```command
 $ python sunai_challenge.py <source data folder> <output folder>
@@ -69,8 +67,6 @@ test $ ./performance_test.py
 
 ![Diseño básico](/docs/basic_design.png)
 
-En términos generales las clases PowerPlant y Day son wrappers de clases Pandas.
-
 ### Instrucciones y consideraciones:
 
 - Cada archivo tiene la generación de energía de 1 día completo de una planta.
@@ -84,7 +80,7 @@ Por cada archivo/input:
   - **Título:** YYYY/MM/DD\_planta\_idPlanta
   - **X:** Date. Ya que es diario no poner la fecha en x_label sino hh:mm
   - **Y:** Active power
-2. Generar **txt**: 
+2. Generar **txt**:
   - Suma diaria del _active power_ (La suma de toda la _Series_ en el archivo)
   - **Min y max** _active power energy_ del día.
   - Path absoluto al gráfico diario generado.
@@ -105,21 +101,27 @@ Global:
 ```command
 Sunai
 ├── docs
+│   ├── basic_design.png
 │   └── LICENSE.md
-├── __main__.py
-├── README.md
 ├── src
-│   ├── day.py
-│   ├── power_plant.py
-│   └── sunai.py
-└── test
-    ├── cases
-    │   ├── data_plantas_python_1_1.xlsx
-    │   ├── data_plantas_python_2.xlsx
-    │   ├── dummy.xlsx
-    │   └── small_data.xlsx
-    ├── __init__.py
-    └── test_unit_power_plants.py
+│   ├── power_plant_day.py
+│   └── sunai_challenge.py
+├── test
+│   ├── cases
+│   │   ├── subfolder
+│   │   │   └── dummy.xlsx
+│   │   ├── data_plantas_python_1_1.xlsx
+│   │   ├── data_plantas_python_2.xlsx
+│   │   ├── dummy.xlsx
+│   │   ├── ignore.file
+│   │   └── small_data.xlsx
+│   ├── __init__.py
+│   ├── test_unit_graph_output_format.py
+│   ├── test_unit_power_plant_day.py
+│   └── test_unit_sunai_challenge.py
+├── __main__.py
+├── performance_test.py
+├── README.md
 ```
 
 -------------------------------------------------------------------------------
