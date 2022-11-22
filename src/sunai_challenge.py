@@ -16,7 +16,6 @@ __status__ = "Prototype"
 import os
 import argparse
 import logging
-import concurrent.futures
 
 from src.power_plant_day import PowerPlantDay
 
@@ -34,6 +33,7 @@ class SunaiChallenge():
         self.input_files = []
         self.days_collection = []
         self.power_plants = {}
+        self.plant_ids = []
 
 
     def run(self, argv=None):
@@ -62,26 +62,14 @@ class SunaiChallenge():
             day.save_summary_txt()
             day.save_graph_image()
 
+            # Get the data to make the summary
+            active_power = day.active_power_day_sum()
+            if day.plant_id not in self.power_plants:
+                self.power_plants[day.plant_id] = [active_power]
+            else:
+                self.power_plants[day.plant_id].append(active_power)
 
-
-    #def parallel_process_mode(self):
-    #    with concurrent.futures.ThreadPoolExecutor() as executor:
-    #        processed_days = executor.map(self.load_day_data,
-    #                                      self.days_collection)
-    #    for day in processed_days:
-    #        plant_id = day.plant_id
-    #        if plant_id not int self.power_plants:
-    #            pass
-
-
-    def load_day_data(self, day):
-        day.load_file()
-        #day.set_output_filenames_fullpath(self.output_folder, self.graph_dir)
-        return day
-
-
-    def single_process_mode(self):
-        pass
+        print(self.print_full_summary())
 
 
     def parse_args(self, argv=None):
@@ -190,8 +178,28 @@ class SunaiChallenge():
 
 
 
-    #def print_full_summary(self):
-    #    """Show total sum of active power by day of all plants"""
-    #    pass
+    def print_full_summary(self):
+        """Show total sum of active power by day of all plants"""
+        # Header section
+        summary = [
+            "Full active_power_im sum by day",
+            "===============================",
+            "plant_id       active_power_im",
+        ]
+        # The mid section
+        total_active_power = 0
+        for plant_id, active_power in self.power_plants.items():
+            active_power_day_sum = sum(active_power)
+            total_active_power += active_power_day_sum
+            line = "  {:>4}  {:>19}".format(plant_id, active_power_day_sum)
+            summary.append(line)
+
+        # Bottom section
+        summary.append("-------------------------------")
+        summary.append("total:  {:>19}\n".format(total_active_power))
+        summary_string = "\n".join(summary)
+
+        return summary_string
+
 
 

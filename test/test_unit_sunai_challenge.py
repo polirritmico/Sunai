@@ -87,35 +87,35 @@ class TestSunaiChallenge(unittest.TestCase):
         os.removedirs(graph_output_dir)
 
 
-    @unittest.skip
+    #@unittest.skip
     def test_run(self):
-        expected_input = "test/cases"
-        expected_output = "test/output/sunai_run"
-        expected_graph = "test/output/sunai_run/images"
-        expected_parallel_mode = True
-        args = ["-p", expected_input, expected_output]
+        input = "test/cases"
+        output = "test/output/sunai_run"
+        graph = "test/output/sunai_run/images"
+        parallel_mode = True
+        args = ["-p", input, output]
         self.sunai.run(args)
 
 
     @unittest.skip
     def test_make_full_summary(self):
-        expected = """Full Summary
-============
-Daily Active Power by Power Plant:
-plant_id    active_power_im
-0000            123456
-0000            123123
-0000            123123
-0000            123123
-0000            123123
-0000            123123
-----------------------
-total:       123123123"""
+        expected = """Full active_power_im sum by day
+===============================
+plant_id       active_power_im
+0032                    0
+0218              3664916
+0321           1975308642
+0031              2520597
+-------------------------------
+total:           1981494155\n"""
 
-        self.sunai.get_input_files()
-        self.sunai.process_all_days()
-        #self.sunai.sort_days_by_plant()
-        output = self.sunai.make_full_summary()
+        input_dir = "test/cases"
+        output_dir = "test/output/sunai_run"
+        graph = "test/output/sunai_run/images"
+        parallel_mode = True
+        args = ["-p", input_dir, output_dir]
+
+        output = self.sunai.run(args)
 
         self.assertEqual(expected, output)
 
