@@ -10,7 +10,7 @@ from PIL.ExifTags import TAGS
 from src.power_plant_day import PowerPlantDay
 
 
-@unittest.skip
+#@unittest.skip
 class TestPowerPlantDay(unittest.TestCase):
     def setUp(self):
         filename = "test/cases/data_plantas_python_1_1.xlsx"
