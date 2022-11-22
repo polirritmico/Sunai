@@ -67,10 +67,9 @@ class Day():
 
     def make_graph(self):
         """
-        Generar gráfico line chart:
-            - Eje X fecha
-            - Eje Y active power
-            - Guardar archivo
+        Make a line chart:
+            - X axis with date
+            - Y axis with active power
 
         Series self.active_power:
             fecha_im
@@ -92,7 +91,6 @@ class Day():
         )
 
 
-
     def save_graph(self, filename):
         try:
             self.graph.get_figure().savefig(filename)
@@ -102,13 +100,6 @@ class Day():
 
 
     def make_summary(self, graph_filename):
-        """
-        Generar txt con:
-            - Suma por día del active power
-            - Valor mínimo de active energy
-            - Valor máximo de active energy
-            - Path al archivo del gráfico
-        """
         active_power_per_day = self.active_power_sum_by_day()
         min_active_energy = self.min_active_energy()
         max_active_energy = self.max_active_energy()
