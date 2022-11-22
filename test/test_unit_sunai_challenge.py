@@ -19,14 +19,12 @@ class TestSunaiChallenge(unittest.TestCase):
         expected_input = "input_test_folder"
         expected_output = "output_TEST"
         expected_graph = "alternative_folder"
-        expected_parallel_mode = True
-        args = ["-p", "-g", expected_graph, expected_input, expected_output]
+        args = ["-g", expected_graph, expected_input, expected_output]
         parsed_args = self.sunai.parse_args(args)
 
         self.assertEqual(expected_input, parsed_args.input_path[0])
         self.assertEqual(expected_output, parsed_args.output_folder)
         self.assertEqual(expected_graph, parsed_args.graphs_folder[0])
-        self.assertEqual(expected_parallel_mode, parsed_args.parallel_mode)
 
 
     #@unittest.skip
@@ -35,14 +33,12 @@ class TestSunaiChallenge(unittest.TestCase):
         expected_output = "output"
         expected_graph = "output/images"
         expected_force = False
-        expected_parallel = False
         args = [expected_input]
         parsed_args = self.sunai.parse_args(args)
 
         self.assertEqual(expected_input, parsed_args.input_path[0])
         self.assertEqual(expected_output, parsed_args.output_folder)
         self.assertEqual(expected_graph, parsed_args.graphs_folder[0])
-        self.assertEqual(expected_force, parsed_args.parallel_mode)
 
 
     #@unittest.skip
@@ -87,13 +83,12 @@ class TestSunaiChallenge(unittest.TestCase):
         os.removedirs(graph_output_dir)
 
 
-    #@unittest.skip
+    @unittest.skip
     def test_run(self):
         input = "test/cases"
         output = "test/output/sunai_run"
         graph = "test/output/sunai_run/images"
-        parallel_mode = True
-        args = ["-p", input, output]
+        args = [input, output]
         self.sunai.run(args)
 
 
@@ -112,7 +107,6 @@ total:           1981494155\n"""
         input_dir = "test/cases"
         output_dir = "test/output/sunai_run"
         graph = "test/output/sunai_run/images"
-        parallel_mode = True
         args = ["-p", input_dir, output_dir]
 
         output = self.sunai.run(args)
