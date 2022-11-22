@@ -4,9 +4,15 @@
 
 import sys
 import traceback
+import logging
 
-#from src.sunai_challenge import SunaiChallenge
+from src.sunai_challenge import SunaiChallenge
 
+logging.basicConfig(
+        filename="sunai_challenge.log",
+        level=logging.WARNING,
+        format="%(asctime)s:%(levelname)s:%(name)s:%(message)s"
+)
 
 def main():
     try:
